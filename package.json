@@ -1,0 +1,86 @@
+{
+  "name": "gfs-react-mvc",
+  "version": "0.1.1",
+  "description": "trade f2e project",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:future-team/gfs-react-mvc.git"
+  },
+  "author": {
+    "name": "ainiderenxm",
+    "email": "277407493@qq.com"
+  },
+  "keywords": [
+    "trade-static"
+  ],
+  "dependencies": {
+    "classnames": "^2.1.3",
+    "extend": "^3.0.0",
+    "gfs-react-redux-twoway-binding": "^0.1.0",
+    "gfs-react-tools": "^1.0.4",
+    "handlebars": "^4.0.5",
+    "immutable": "^3.8.1",
+    "react-redux": "^5.0.2",
+    "redux": "^3.6.0"
+  },
+  "devDependencies": {
+    "gfs-doc": "^0.1.26",
+    "gulp-run-sequence": "^0.3.2",
+    "internal-ip": "^1.2.0",
+    "babel": "^6.0.15",
+    "babel-core": "^5.8.23",
+    "babel-loader": "^5.3.2",
+    "babel-polyfill": "^6.8.0",
+    "css-loader": "0.17.0",
+    "es3ify-webpack-plugin": "0.0.1",
+    "extract-text-webpack-plugin": "^0.8.2",
+    "glob": "^5.0.14",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.3.0",
+    "gulp-karma": "0.0.5",
+    "gulp-less": "^3.0.3",
+    "gulp-load-plugins": "^1.0.0-rc.1",
+    "gulp-minify-css": "^1.2.1",
+    "gulp-open": "^2.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-util": "^3.0.6",
+    "gulp-webpack": "^1.5.0",
+    "handlebars-loader": "^1.3.0",
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.13.15",
+    "karma-chrome-launcher": "^0.2.1",
+    "karma-cli": "^0.1.1",
+    "karma-jasmine": "^0.3.6",
+    "karma-webpack": "^1.7.0",
+    "less": "^2.5.1",
+    "less-loader": "^2.2.0",
+    "raw-loader": "^0.5.1",
+    "react": "^0.14.3",
+    "react-hot-loader": "^1.3.0",
+    "style-loader": "^0.12.3",
+    "webpack": "^1.12.1",
+    "url-loader": "^0.5.7",
+    "webpack-bower-resolver": "0.0.1",
+    "webpack-dev-server": "^1.10.1",
+    "es3ify-loader": "^0.2.0",
+    "eslint": "^3.4.0",
+    "eslint-loader": "^1.5.0",
+    "babel-eslint": "^6.1.2",
+    "eslint-plugin-react": "^6.2.0",
+    "del": "^2.2.2"
+  },
+  "scripts": {
+    "build": "node_modules/.bin/gulp && node_modules/.bin/gulp min",
+    "test": "karma start",
+    "demo": "node_modules/.bin/gulp demo",
+    "doc": "gfsdoc ||node_modules/.bin/gfsdoc",
+    "start": "npm run demo",
+    "prepublish": " npm run build"
+  },
+  "bugs": {
+    "url": "http://github.com/future-team/gfs-react-mvc/issues"
+  },
+  "homepage": "http://github.com/future-team/gfs-react-mvc",
+  "main": "lib/",
+  "license": "MIT"
+}
