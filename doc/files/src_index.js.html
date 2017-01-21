@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, minimal-ui" />
+    <title>src/index.js - gfs-react-mvc</title>
+  
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-smart" _assetsPath="../assets">
+ <nav class="navbar navbar-inverse navbar-fixed-top custom-navbar" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+               <a class="navbar-brand mainlogo" href="">
+             
+            <img alt="gfs-react-mvc" src="../assets/css/logo.png" title="gfs-react-mvc">
+            
+                gfs-react-mvc
+          </a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                 <ul class="nav navbar-nav">
+                    
+                    <li><a href="">主页</a>
+                    </li>
+                    
+                </ul>
+               <div class="navbar-form navbar-right filterAPi" autocomplete="off">
+                <input type="text" id='txtSearchAPI' class="form-control search-query" placeholder="Search for API" />
+                 <ul id="filterList" class="filterItems dropdown-menu" role="menu"></ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div id="sidebar">
+    <h3>模块/类</h3>
+        <div id="api-tabview-filter">
+            <input id='txtSearch' type="search" class="form-control" placeholder="Type to filter Modules/Classes">
+        </div>
+        <dl id="sidebar_list">
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/gfs-react-mvc.html">gfs-react-mvc</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/Control.html">Control</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/Page.html">Page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/Model.html">Model</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/View.html">View</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+        </dl>
+    <div class="icon-sidebar-btn icon-sidebar-btn-open"><span class="glyphicon glyphicon-chevron-left"></span>收起</div>
+</div>
+   
+    <div class="stdoc-content">
+        <div class="apidocs">
+            <div id="docs-main">
+                <div class="content">
+                    <div class="page-header">
+    <h1>src/index.js <small>File</small></h1>
+</div>
+
+<div class="file">
+    <pre class="prettyprint linenums" id='src_code'>
+export {Model} from &#x27;./model&#x27;
+export {Control,Sync,getControl} from &#x27;./control&#x27;
+export {View} from &#x27;./view&#x27;
+
+import extend from &#x27;extend&#x27;
+import RTools from &#x27;gfs-react-tools&#x27;
+import {getModels,emptyModels} from &#x27;./model&#x27;
+
+/**
+ * 提供Model、View、Control、Sync、RTools等系列便捷类库
+ * @module gfs-react-mvc
+ * */
+
+/**
+ * 页面渲染
+ * @class Page
+ * */
+
+/**
+ *
+ * @method page
+ * @param opts {object} 可以直接等于react component
+ * @param opts.middleware {array} 可选，中间件集合
+ * @param opts.module {react component} 必填，需要渲染在页面的组件
+ * @param opts.devTools {object} 可选，数据模型调试，可视化面板，可以查看数据模型结构
+ * @param opts.bar {object} 可选，异步数据请求时加载状态栏
+ * @param opts.agent {string} 可选，默认值为pc，三种可选值：pc、wap、other，other已bar字段对象为准
+ * @param opts.container {string} 可选，默认为root，组件放在页面的容器id
+ * @return RTools
+ * @example
+ *
+ *      imoprt {page} from &#x27;gfs-react-mvc&#x27;
+ *      import Module from &#x27;./TestComponent&#x27;
+ *
+ *      //渲染到页面
+ *      page(Module)
+ * */
+export function page(opts={}){
+
+    if(opts &amp;&amp; typeof(opts.module) === &#x27;undefined&#x27;){
+        opts = {
+            module:opts
+        }
+    }
+
+    let rtools = new RTools(extend({
+        //可选
+        middleware:[],
+        //必填
+        module:null,
+        //可选
+        reducers:getModels(),
+        //可选
+        //devTools:DevTools,
+        //可选 默认loadingbarComponent
+        //bar:null,
+        //可选  loadingbar平台（pc/wap/other）other直接使用bar字段作为参数
+        //agent:&#x27;pc&#x27;,
+        //可选  react component放取的节点id
+        container:&#x27;root&#x27;
+    },opts) )
+
+    emptyModels()
+
+    return rtools
+}
+    </pre>
+</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+<a id="gotoTop" class='well well-small' href='#'>
+</a>
+<script src="../assets/vendor/jquery/jquery-1.8.2.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/doc.js"></script>
+
+</body>
+</html>

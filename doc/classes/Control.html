@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, minimal-ui" />
+    <title>Control - gfs-react-mvc</title>
+  
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-smart" _assetsPath="../assets">
+ <nav class="navbar navbar-inverse navbar-fixed-top custom-navbar" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+               <a class="navbar-brand mainlogo" href="">
+             
+            <img alt="gfs-react-mvc" src="../assets/css/logo.png" title="gfs-react-mvc">
+            
+                gfs-react-mvc
+          </a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                 <ul class="nav navbar-nav">
+                    
+                    <li><a href="">主页</a>
+                    </li>
+                    
+                </ul>
+               <div class="navbar-form navbar-right filterAPi" autocomplete="off">
+                <input type="text" id='txtSearchAPI' class="form-control search-query" placeholder="Search for API" />
+                 <ul id="filterList" class="filterItems dropdown-menu" role="menu"></ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div id="sidebar">
+    <h3>模块/类</h3>
+        <div id="api-tabview-filter">
+            <input id='txtSearch' type="search" class="form-control" placeholder="Type to filter Modules/Classes">
+        </div>
+        <dl id="sidebar_list">
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/gfs-react-mvc.html">gfs-react-mvc</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/Control.html">Control</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/Page.html">Page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/Model.html">Model</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/View.html">View</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+        </dl>
+    <div class="icon-sidebar-btn icon-sidebar-btn-open"><span class="glyphicon glyphicon-chevron-left"></span>收起</div>
+</div>
+   
+    <div class="stdoc-content">
+        <div class="apidocs">
+            <div id="docs-main">
+                <div class="content">
+                    <div class="page-header">
+    <h1>Control</h1>
+</div>
+ <div class="well well-small sign-left3">
+      <div class="stdoc-code"><p>控制器</p>
+</div>
+ </div>
+
+
+<div class="hide-view-demo hide-edit-code hide-found-at">
+    
+    
+    <div class="tab-content">
+        <div id="class" class="tab-pane">
+            <div class="well well-small classDetail sign-left1">
+            
+
+            
+
+            
+                <div class="foundat">
+                    Defined in: <a href="../files/src_control.js.html#l5"><code>src&#x2F;control.js:5</code></a>
+                </div>
+            
+
+            
+                
+                    Module: <a href="../modules/gfs-react-mvc.html">gfs-react-mvc</a>
+                
+            
+
+            
+        </div>
+
+        
+            
+        </div>
+
+        
+            <div id="method" class="tab-pane active">
+                <h2 class="off-left">方法</h2>
+
+                
+                    <div id="method_Control" class="method item">
+    <h3 class="name">Control</h3>
+    <code>
+    Control
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        modelName
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        loadingbar
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        mock
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+    </code>
+
+    
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p class="foundat">
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_control.js.html#l108"><code>src&#x2F;control.js:108</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description well well-small sign-left3">
+        <div class="stdoc-code"><p>此方法是一个装饰器，只能用于类，被装饰后的类会变成对象列表（JSON）格式，主要目的是传递给组件使用，通过redux connect连接。
+被装饰的类将成为一个控制器，处理异步数据逻辑或业务逻辑，将数据传递给视图或服务器</p>
+</div>
+    </div>
+
+    
+        <div class="params">
+            <h4>参数:</h4>
+            <div class="clearfix params-wap-table">
+                
+                    <div class="params-box">
+                        
+                            <code class="param-name">modelName</code>
+                            <span class="type">String</span>
+                        
+
+                        
+
+                        <span class="param-description">
+                            <p>实体类名字，全部小写，可以不加model后缀</p>
+
+                        </span>
+                    </div>
+                    
+                
+                    <div class="params-box">
+                        
+                            <code class="param-name">loadingbar</code>
+                            <span class="type">Loadingbar</span>
+                        
+
+                        
+
+                        <span class="param-description">
+                            <p>废弃</p>
+
+                        </span>
+                    </div>
+                    
+                
+                    <div class="params-box">
+                        
+                            <code class="param-name">mock</code>
+                            <span class="type">Mock</span>
+                        
+
+                        
+
+                        <span class="param-description">
+                            <p>废弃</p>
+
+                        </span>
+                    </div>
+                    
+                
+            </div>
+
+            <table class="table table-bordered params-pc-table">
+                <tr class='active'><th>参数名</th><th>类型</th><th>标识</th><th>描述</th></tr>
+                
+                    <tr class="param">
+                        
+                            <td> <code class="param-name">modelName</code>
+                            <td> <span class="type">String</span>
+                        <td>
+                        
+
+                        
+                    </td>
+                    <td><div class="param-description">
+                        <p>实体类名字，全部小写，可以不加model后缀</p>
+
+                    </div>
+
+                        
+                    </tr>
+                
+                    <tr class="param">
+                        
+                            <td> <code class="param-name">loadingbar</code>
+                            <td> <span class="type">Loadingbar</span>
+                        <td>
+                        
+
+                        
+                    </td>
+                    <td><div class="param-description">
+                        <p>废弃</p>
+
+                    </div>
+
+                        
+                    </tr>
+                
+                    <tr class="param">
+                        
+                            <td> <code class="param-name">mock</code>
+                            <td> <span class="type">Mock</span>
+                        <td>
+                        
+
+                        
+                    </td>
+                    <td><div class="param-description">
+                        <p>废弃</p>
+
+                    </div>
+
+                        
+                    </tr>
+                
+            </table>
+
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                    <p>object</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+        <div class="example">
+            <h4>Example:</h4>
+            <ul class="nav nav-tabs example-list">
+                
+            </ul>
+
+            <div class="example-content ">
+                <div class="stdoc-code"><pre class="code prettyprint"><code> import {Sync,Control} from &#39;gfs-react-mvc&#39;
+ //这里由于@为文档关键符号，所以下面将以$代替
+ //@Control(&#39;testmodel&#39;)
+ $Control(&#39;testmodel&#39;)
+ class TestControl{
+     constructor(){}
+     //这里由于@为文档关键符号，所以下面将以$代替
+     $Sync(&#39;/test&#39;,{
+         method:&#39;get&#39;
+     })
+     save(data){
+         //此处data是异步请求后服务器返回的结果
+         if(data){
+             //返回数据更新页面节点信息
+             return data
+         }
+         //不做任何改变
+         return false
+     }
+ }</code></pre>
+</div>
+            </div>
+             <button class="btn btn-info btn-viewDemo" type="button">查看示例</button>
+            <button class="btn btn-info btn-editDemo" type="button">编辑代码</button>
+        </div>
+    
+</div>
+
+                
+                    <div id="method_Sync" class="method item">
+    <h3 class="name">Sync</h3>
+    <code>
+    Sync
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        anywhere
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+    </code>
+
+    
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p class="foundat">
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_control.js.html#l13"><code>src&#x2F;control.js:13</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description well well-small sign-left3">
+        <div class="stdoc-code"><p>异步操作，Sync是一个装饰器（Decorator），用于装饰Control类中的方法，将原有的方法变成一个异步成功调用后执行结果方法，被装饰的方法需要返回数据或false，决定是否更新store刷新节点。</p>
+<ul>
+<li>由Sync装饰后的方法，其作用域为Control，依然可以调用类中其他方法</li>
+<li>Sync参数error可以为Control中xxxError命名的方法替代，“xxx”命名规则必须与Sync装饰的方法名一致</li>
+<li>被装饰后的方法在View中调用时传入的参数将已第二个为准，第一个参数将永远是异步执行后的结果</li>
+<li>被装饰的方法名要和Model类中方法名对应</li>
+</ul>
+</div>
+    </div>
+
+    
+        <div class="params">
+            <h4>参数:</h4>
+            <div class="clearfix params-wap-table">
+                
+                    <div class="params-box">
+                        
+                            <code class="param-name">anywhere</code>
+                            <span class="type">Object | String</span>
+                        
+
+                        
+
+                        <span class="param-description">
+                            <p>参数为一个字符串时，anywhere为url，当方法拥有2个参数，第一个参数作为url，第二个参数为object类型</p>
+
+                        </span>
+                    </div>
+                    
+                        
+                            <div class="params-box">
+                                
+                                    <code class="param-name">anywhere.dataType</code>
+                                    <span class="type">String</span>
+                                
+
+                                
+
+                                <span class="param-description">
+                                    <p>数据返回类型 默认为json</p>
+
+                                </span>
+                            </div>
+
+                            
+
+                        
+                            <div class="params-box">
+                                
+                                    <code class="param-name">anywhere.asyn</code>
+                                    <span class="type">Boolean</span>
+                                
+
+                                
+
+                                <span class="param-description">
+                                    <p>是否为异步请求，默认为true</p>
+
+                                </span>
+                            </div>
+
+                            
+
+                        
+                            <div class="params-box">
+                                
+                                    <code class="param-name">anywhere.method</code>
+                                    <span class="type">String</span>
+                                
+
+                                
+
+                                <span class="param-description">
+                                    <p>数据请求方式，默认为GET，可选值有：POST、GET、OPTION、DEL、PUT</p>
+
+                                </span>
+                            </div>
+
+                            
+
+                        
+                            <div class="params-box">
+                                
+                                    <code class="param-name">anywhere.timeout</code>
+                                    <span class="type">Number</span>
+                                
+
+                                
+
+                                <span class="param-description">
+                                    <p>请求超时时间，可选填</p>
+
+                                </span>
+                            </div>
+
+                            
+
+                        
+                            <div class="params-box">
+                                
+                                    <code class="param-name">anywhere.credentials</code>
+                                    <span class="type">Object</span>
+                                
+
+                                
+
+                                <span class="param-description">
+                                    <p>跨域是是否要包含cookie值，可选值：include</p>
+
+                                </span>
+                            </div>
+
+                            
+
+                        
+                            <div class="params-box">
+                                
+                                    <code class="param-name">anywhere.error</code>
+                                    <span class="type">Function</span>
+                                
+
+                                
+
+                                <span class="param-description">
+                                    <p>请求失败回调，可选</p>
+
+                                </span>
+                            </div>
+
+                            
+
+                        
+                            <div class="params-box">
+                                
+                                    <code class="param-name">anywhere.header</code>
+                                    <span class="type">Object</span>
+                                
+
+                                
+
+                                <span class="param-description">
+                                    <p>包含的请求头，可选</p>
+
+                                </span>
+                            </div>
+
+                            
+
+                        
+                            <div class="params-box">
+                                
+                                    <code class="param-name">anywhere.body</code>
+                                    <span class="type">Object</span>
+                                
+
+                                
+
+                                <span class="param-description">
+                                    <p>需要传递给服务端的属性字段值，可选</p>
+
+                                </span>
+                            </div>
+
+                            
+
+                        
+                            <div class="params-box">
+                                
+                                    <code class="param-name">anywhere.cache</code>
+                                    <span class="type">Boolean</span>
+                                
+
+                                
+
+                                <span class="param-description">
+                                    <p>请求数据是否缓存</p>
+
+                                </span>
+                            </div>
+
+                            
+
+                        
+                    
+                
+            </div>
+
+            <table class="table table-bordered params-pc-table">
+                <tr class='active'><th>参数名</th><th>类型</th><th>标识</th><th>描述</th></tr>
+                
+                    <tr class="param">
+                        
+                            <td> <code class="param-name">anywhere</code>
+                            <td> <span class="type">Object | String</span>
+                        <td>
+                        
+
+                        
+                    </td>
+                    <td><div class="param-description">
+                        <p>参数为一个字符串时，anywhere为url，当方法拥有2个参数，第一个参数作为url，第二个参数为object类型</p>
+
+                    </div>
+
+                        
+                            <table class="table table-bordered">
+                                <tr class='active'><th>参数名</th><th>类型</th><th>标识</th><th>描述</th></tr>
+                                
+                                    <tr class="param">
+                                        
+                                            <td> <code class="param-name">dataType</code>
+                                            <td> <span class="type">String</span>
+                                        <td>
+                                        
+
+                                        
+                                    </td>
+                                    <td><div class="param-description">
+                                        <p>数据返回类型 默认为json</p>
+
+                                    </div>
+                                        
+                                    </tr>
+                                
+                                    <tr class="param">
+                                        
+                                            <td> <code class="param-name">asyn</code>
+                                            <td> <span class="type">Boolean</span>
+                                        <td>
+                                        
+
+                                        
+                                    </td>
+                                    <td><div class="param-description">
+                                        <p>是否为异步请求，默认为true</p>
+
+                                    </div>
+                                        
+                                    </tr>
+                                
+                                    <tr class="param">
+                                        
+                                            <td> <code class="param-name">method</code>
+                                            <td> <span class="type">String</span>
+                                        <td>
+                                        
+
+                                        
+                                    </td>
+                                    <td><div class="param-description">
+                                        <p>数据请求方式，默认为GET，可选值有：POST、GET、OPTION、DEL、PUT</p>
+
+                                    </div>
+                                        
+                                    </tr>
+                                
+                                    <tr class="param">
+                                        
+                                            <td> <code class="param-name">timeout</code>
+                                            <td> <span class="type">Number</span>
+                                        <td>
+                                        
+
+                                        
+                                    </td>
+                                    <td><div class="param-description">
+                                        <p>请求超时时间，可选填</p>
+
+                                    </div>
+                                        
+                                    </tr>
+                                
+                                    <tr class="param">
+                                        
+                                            <td> <code class="param-name">credentials</code>
+                                            <td> <span class="type">Object</span>
+                                        <td>
+                                        
+
+                                        
+                                    </td>
+                                    <td><div class="param-description">
+                                        <p>跨域是是否要包含cookie值，可选值：include</p>
+
+                                    </div>
+                                        
+                                    </tr>
+                                
+                                    <tr class="param">
+                                        
+                                            <td> <code class="param-name">error</code>
+                                            <td> <span class="type">Function</span>
+                                        <td>
+                                        
+
+                                        
+                                    </td>
+                                    <td><div class="param-description">
+                                        <p>请求失败回调，可选</p>
+
+                                    </div>
+                                        
+                                    </tr>
+                                
+                                    <tr class="param">
+                                        
+                                            <td> <code class="param-name">header</code>
+                                            <td> <span class="type">Object</span>
+                                        <td>
+                                        
+
+                                        
+                                    </td>
+                                    <td><div class="param-description">
+                                        <p>包含的请求头，可选</p>
+
+                                    </div>
+                                        
+                                    </tr>
+                                
+                                    <tr class="param">
+                                        
+                                            <td> <code class="param-name">body</code>
+                                            <td> <span class="type">Object</span>
+                                        <td>
+                                        
+
+                                        
+                                    </td>
+                                    <td><div class="param-description">
+                                        <p>需要传递给服务端的属性字段值，可选</p>
+
+                                    </div>
+                                        
+                                    </tr>
+                                
+                                    <tr class="param">
+                                        
+                                            <td> <code class="param-name">cache</code>
+                                            <td> <span class="type">Boolean</span>
+                                        <td>
+                                        
+
+                                        
+                                    </td>
+                                    <td><div class="param-description">
+                                        <p>请求数据是否缓存</p>
+
+                                    </div>
+                                        
+                                    </tr>
+                                
+                            </table>
+                        </td>
+                        
+                    </tr>
+                
+            </table>
+
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                    <p>function</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+        <div class="example">
+            <h4>Example:</h4>
+            <ul class="nav nav-tabs example-list">
+                
+            </ul>
+
+            <div class="example-content ">
+                <div class="stdoc-code"><pre class="code prettyprint"><code> import {Sync,Control} from &#39;gfs-react-mvc&#39;
+
+ class TestControl{
+     constructor(){}
+     //这里由于@为文档关键符号，所以下面将以$代替
+     $Sync(&#39;/test&#39;,{
+         method:&#39;get&#39;
+     })
+     save(data){
+         //此处data是异步请求后服务器返回的结果
+         if(data){
+             //返回数据更新页面节点信息
+             return data
+         }
+         //不做任何改变
+         return false
+     }
+ }</code></pre>
+</div>
+            </div>
+             <button class="btn btn-info btn-viewDemo" type="button">查看示例</button>
+            <button class="btn btn-info btn-editDemo" type="button">编辑代码</button>
+        </div>
+    
+</div>
+
+                
+            </div>
+        
+
+        
+
+        
+    </div>
+</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+<a id="gotoTop" class='well well-small' href='#'>
+</a>
+<script src="../assets/vendor/jquery/jquery-1.8.2.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/doc.js"></script>
+
+</body>
+</html>

@@ -1,9 +1,10 @@
-var config = require('package.json');
+var config = require('./package.json');
+//var description = require('./README.md');
 
 module.exports = {
     //扫描的文件路径
-    paths: ['lib/'],
-    demoDir:"example/",
+    paths: ['src/'],
+    demoDir:"examples/",
     //文档页面输出路径
     outdir: 'doc/',
     //内置主题
@@ -17,11 +18,20 @@ module.exports = {
         name: config.name,
 
         //项目描述，可以配置html，会生成到document主页
-        //description: '',
+        description: '',
 
         //版本信息
         version: config.version,
-
+        //是否隐藏defined in 注解(代码定义于第几行)
+        hideFoundAt:'true',
+        //是否禁止每个class里的methods、properties、events表格
+        hideClassItemTable:'true',
+        //是否隐藏tab栏
+        hideTabItemList:'true',
+        hideViewDemo:'true',
+        hideEditCode:'true',
+        //设置默认active的tab，不设置的话默认激活detail tab
+        activeTab:'method',
         //地址信息
         url: '',
         //logo:'dp-logo.png',

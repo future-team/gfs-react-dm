@@ -2,9 +2,52 @@ import {getActionTypes} from './model'
 import RTools from 'gfs-react-tools'
 import './utils'
 
+/**
+ * 控制器
+ * @class Control
+ * */
 const fetch = RTools.fetch
 let controlList = {}
+
 //任意类型参数
+/**
+ * 异步操作，Sync是一个装饰器（Decorator），用于装饰Control类中的方法，将原有的方法变成一个异步成功调用后执行结果方法，被装饰的方法需要返回数据或false，决定是否更新store刷新节点。
+ * - 由Sync装饰后的方法，其作用域为Control，依然可以调用类中其他方法
+ * - Sync参数error可以为Control中xxxError命名的方法替代，“xxx”命名规则必须与Sync装饰的方法名一致
+ * - 被装饰后的方法在View中调用时传入的参数将已第二个为准，第一个参数将永远是异步执行后的结果
+ * - 被装饰的方法名要和Model类中方法名对应
+ * @method Sync
+ * @param anywhere {object|string} 参数为一个字符串时，anywhere为url，当方法拥有2个参数，第一个参数作为url，第二个参数为object类型
+ * @param anywhere.dataType {string} 数据返回类型 默认为json
+ * @param anywhere.asyn  {boolean} 是否为异步请求，默认为true
+ * @param anywhere.method {string} 数据请求方式，默认为GET，可选值有：POST、GET、OPTION、DEL、PUT
+ * @param anywhere.timeout {number} 请求超时时间，可选填
+ * @param anywhere.credentials {object} 跨域是是否要包含cookie值，可选值：include
+ * @param anywhere.error {function} 请求失败回调，可选
+ * @param anywhere.header {object} 包含的请求头，可选
+ * @param anywhere.body {object} 需要传递给服务端的属性字段值，可选
+ * @param anywhere.cache {boolean} 请求数据是否缓存
+ * @return function
+ * @example
+ *      import {Sync,Control} from 'gfs-react-mvc'
+ *
+ *      class TestControl{
+ *          constructor(){}
+ *          //这里由于@为文档关键符号，所以下面将以$代替
+ *          $Sync('/test',{
+ *              method:'get'
+ *          })
+ *          save(data){
+ *              //此处data是异步请求后服务器返回的结果
+ *              if(data){
+ *                  //返回数据更新页面节点信息
+ *                  return data
+ *              }
+ *              //不做任何改变
+ *              return false
+ *          }
+ *      }
+ * */
 export function Sync(anywhere){
 
     let url = ''
@@ -62,7 +105,36 @@ export function Sync(anywhere){
         return descriptor
     }
 }
-
+/**
+ * 此方法是一个装饰器，只能用于类，被装饰后的类会变成对象列表（JSON）格式，主要目的是传递给组件使用，通过redux connect连接。
+ * 被装饰的类将成为一个控制器，处理异步数据逻辑或业务逻辑，将数据传递给视图或服务器
+ * @method Control
+ * @param modelName {string} 实体类名字，全部小写，可以不加model后缀
+ * @param loadingbar {Loadingbar} 废弃
+ * @param mock {Mock} 废弃
+ * @return object
+ * @example
+ *      import {Sync,Control} from 'gfs-react-mvc'
+ *      //这里由于@为文档关键符号，所以下面将以$代替
+ *      //@Control('testmodel')
+ *      $Control('testmodel')
+ *      class TestControl{
+ *          constructor(){}
+ *          //这里由于@为文档关键符号，所以下面将以$代替
+ *          $Sync('/test',{
+ *              method:'get'
+ *          })
+ *          save(data){
+ *              //此处data是异步请求后服务器返回的结果
+ *              if(data){
+ *                  //返回数据更新页面节点信息
+ *                  return data
+ *              }
+ *              //不做任何改变
+ *              return false
+ *          }
+ *      }
+ * */
 export function Control(modelName,loadingbar,mock){
 
     if(arguments.length === 2 ){
