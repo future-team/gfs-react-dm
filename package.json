@@ -1,7 +1,7 @@
 {
   "name": "gfs-react-mvc",
   "version": "0.1.1",
-  "description": "trade f2e project",
+  "description": "react redux流程简化",
   "repository": {
     "type": "git",
     "url": "git@github.com:future-team/gfs-react-mvc.git"
@@ -11,7 +11,12 @@
     "email": "277407493@qq.com"
   },
   "keywords": [
-    "trade-static"
+    "react",
+    "react redux",
+    "redux",
+    "mvc",
+    "mvvm",
+    "javascript"
   ],
   "dependencies": {
     "classnames": "^2.1.3",
