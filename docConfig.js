@@ -1,5 +1,8 @@
 var config = require('./package.json');
 //var description = require('./README.md');
+var fs = require('fs');
+var path = require('path');
+var data=fs.readFileSync(path.resolve(__dirname,'src/info.html'),"utf-8");
 
 module.exports = {
     //扫描的文件路径
@@ -18,7 +21,7 @@ module.exports = {
         name: config.name,
 
         //项目描述，可以配置html，会生成到document主页
-        description: '',
+        description: data,
 
         //版本信息
         version: config.version,
@@ -39,7 +42,7 @@ module.exports = {
         //导航信息
         navs: [{
             name: "主页",
-            url: ""
+            url: "index.html"
         }]
     },
     //demo页面需要加载的js库

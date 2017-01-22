@@ -1,16 +1,18 @@
-# module-template
+# gfs-react-mvc
+将react、redux整合一起使用的繁琐步骤进行封装，对外提供@View、@Control、@Model分别对应react component、redux action、redux store调用 						
 
-这是一个模块组件开发的脚手架项目，用于快速搭建模块开发项目。
+(文档)[https://future-team.github.io/gfs-react-mvc/doc]请戳(https://future-team.github.io/gfs-react-mvc/)[https://future-team.github.io/gfs-react-mvc/doc]
+
+# 安装
+
+```javascript
+
+npm install gfs-react-mvc --save
+```
 
 ## 使用
 
-- 下载此项目至本地，修改项目名称和package.json里的信息；
-- git remote rm origin
-- git remote add origin {你的仓库地址}  例如：git remote add origin git@code.dianpingoa.com:pc-trade-f2e/apollo-template-static.git
-- git fetch
-- git pull origin master
-
-- 全局安装smartDoc 用于生成文档
+(文档)[https://future-team.github.io/gfs-react-mvc/doc]请戳(https://future-team.github.io/gfs-react-mvc/)[https://future-team.github.io/gfs-react-mvc/doc]
 
 ## Command
 

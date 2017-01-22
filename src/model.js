@@ -1,7 +1,7 @@
 import { createReducer } from 'gfs-react-redux-twoway-binding'
 import Immutable from 'immutable'
 /**
- * 实体、数据模型
+ * 实体、数据模型，model中的方法和属性都该设置成静态类型
  * @class Model
  * */
 //需要一个队列保存model

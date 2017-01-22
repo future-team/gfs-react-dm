@@ -89,8 +89,8 @@ export function Sync(anywhere){
                         if(result && typeof(result) === 'object'){
 
                             dispatch({
-                                type:getActionTypes(`${target.__modelName}$$${name}`),
-                                data:result
+                                type:result.type ? result.type : getActionTypes(`${target.__modelName}$$${name}`),
+                                data:result.data? result.data : result
                             } )
                         }
                     },error ||  target[name+'Error'] )

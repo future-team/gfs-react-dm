@@ -30,7 +30,7 @@
             <div id="navbar" class="navbar-collapse collapse">
                  <ul class="nav navbar-nav">
                     
-                    <li><a href="">主页</a>
+                    <li><a href="index.html">主页</a>
                     </li>
                     
                 </ul>
@@ -195,8 +195,8 @@ export function Sync(anywhere){
                         if(result &amp;&amp; typeof(result) === &#x27;object&#x27;){
 
                             dispatch({
-                                type:getActionTypes(&#x60;${target.__modelName}$$${name}&#x60;),
-                                data:result
+                                type:result.type ? result.type : getActionTypes(&#x60;${target.__modelName}$$${name}&#x60;),
+                                data:result.data? result.data : result
                             } )
                         }
                     },error ||  target[name+&#x27;Error&#x27;] )

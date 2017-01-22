@@ -30,7 +30,7 @@
             <div id="navbar" class="navbar-collapse collapse">
                  <ul class="nav navbar-nav">
                     
-                    <li><a href="">主页</a>
+                    <li><a href="index.html">主页</a>
                     </li>
                     
                 </ul>
@@ -101,13 +101,114 @@
                         <div class="apidocs apidocs-index">
         <div id="docs-main" class="content">
             
-                <h2>gfs-react-mvc</h2>
-            <ul>
-                <li><p>Please type keyword to search api in SearchBox on the top navbar.</p></li>
-                <li><p>Please click the Left Nav to view the detail.</p></li>
-                <li><p>Using the filter box to search modules and classes</p></li>
-                <li><p>In Example Panel,Click the [view domo] button will popup demo page and click [edit code] then you will eidt the example code online</p></li>
-            </ul>
+                <p>
+将react、redux整合一起使用的繁琐步骤进行封装，对外提供<code>@View</code>、<code>@Control</code>、<code>@Model</code>分别对应react component、redux action、redux store调用
+</p>
+<ul>
+    <li style="margin-bottom:8px"><strong>@View</strong> 利用react-redux中提供的connect包装器将store、control（action）与Component建立联系，使Component具有操作store和调用control的能力，Component中可直接使用<code>manualChange</code>对store数据进行更新</li>
+    <li style="margin-bottom:8px"><strong>@Control</strong> 拥有与服务端数据通信功能，获取数据后可决定是否更新store或直接什么都不做，提供<code>@Sync</code>装饰器；被装饰的类会返回一个对象列表，提供给Component调用</li>
+    <li><strong>@Model</strong> 字段映射关系和数据操作，包括对数据的增删改查；</li>
+</ul>
+<p><a href="https://github.com/future-team/generator-future-static" target="_blank">generator-future-static</a>提供对应脚手架项目<code>webpack-react-mvc</code></p>
+<p>
+    最后<code>page</code>方法将决定具体哪个Component在页面的哪个节点中渲染。
+</p>
+<h3>安装</h3>
+<pre class="code prettyprint">
+npm install gfs-react-mvc --save
+</pre>
+<h3>使用(一个改变年龄的简单例子)</h3>
+* View
+<pre class="code prettyprint">
+import React, { Component /*,PropTypes*/} from 'react'
+import {Model,Control,Sync,View,page} from 'gfs-react-mvc'
+
+@View(TestControl)
+class TestComponent extends Component {
+    constructor(props) {
+        super(props)
+    }
+
+    componentDidMount(){
+        setTimeout(()=>{
+            //调用control中的方法改变age
+            this.props.changeAge(this)
+        },1000)
+    }
+
+    static defaultProps={}
+
+    render() {
+        console.log('age:',this.props.testmodel.get('age') )
+        return (
+            <div>
+                {this.props.testmodel.get('age')}
+            </div>
+        )
+    }
+}
+
+//渲染到页面
+page(TestComponent)
+</pre>
+
+* Control
+<pre class="code prettyprint">
+import {Model,Control,Sync,View,page} from 'gfs-react-mvc'
+
+@Control('test')
+class TestControl {
+
+    constructor(){
+        this.classNames = 'testcontrol'
+
+    }
+
+    @Sync('/test.json',{
+        error:(err)=>{
+            console.dir(err)
+        }
+    })
+    changeAge(data,c){
+
+        setTimeout(()=>{
+            c.manualChange('age','通过manualChange改变age：10')
+        },2000)
+        data.age = 'ajax改变的age：'+data.age
+        return data
+    }
+    del(data){
+
+        return data
+    }
+}
+</pre>
+
+* Model
+<pre class="code prettyprint">
+import {Model,Control,Sync,View,page} from 'gfs-react-mvc'
+
+@Model
+class TestModel {
+
+    static age = 20
+    static xq = {}
+    constructor(){
+
+    }
+    static changeAge(data, action){
+
+        if(action.data){
+            return data.merge(Immutable.fromJS(action.data) )
+        }
+    }
+    static del(data, action){
+        if(action.data){
+            return data.merge(Immutable.fromJS(action.data) )
+        }
+    }
+}
+</pre>
             
         </div>
     </div>
