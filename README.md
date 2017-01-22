@@ -1,7 +1,7 @@
 # gfs-react-mvc
 将react、redux整合一起使用的繁琐步骤进行封装，对外提供@View、@Control、@Model分别对应react component、redux action、redux store调用 						
 
-[文档](https://future-team.github.io/gfs-react-mvc/doc])请戳[https://future-team.github.io/gfs-react-mvc/](https://future-team.github.io/gfs-react-mvc/doc)
+[文档](https://future-team.github.io/gfs-react-mvc/doc])请戳[文档](https://future-team.github.io/gfs-react-mvc/doc])
 
 # 安装
 
@@ -12,7 +12,7 @@ npm install gfs-react-mvc --save
 
 ## 使用
 
-[文档](https://future-team.github.io/gfs-react-mvc/doc])请戳[https://future-team.github.io/gfs-react-mvc/](https://future-team.github.io/gfs-react-mvc/doc)
+[文档](https://future-team.github.io/gfs-react-mvc/doc])请戳[文档](https://future-team.github.io/gfs-react-mvc/doc])
 
 ## Command
 
