@@ -88,18 +88,28 @@ export function Sync(anywhere){
                     if(opts && typeof(opts.method) =='undefined' ){
                         opts.method = 'get'
                     }
-                    fetch(url,extend(opts,methodArg.url ||methodArg.body ?methodArg:{} ) ).then(function(){
+                    if(url){
+                        fetch(url,extend(opts,methodArg.url ||methodArg.body ?methodArg:{} ) ).then(function(){
 
-                        let result = fn.apply(target,Array.prototype.slice.call(arguments).concat(args) )
+                            let result = fn.apply(target,Array.prototype.slice.call(arguments).concat(args) )
 
+                            if(result && typeof(result) === 'object'){
+
+                                dispatch({
+                                    type:result.type ? result.type : getActionTypes(`${target.__modelName}$$${name}`),
+                                    data:result.data? result.data : result
+                                } )
+                            }
+                        },error ||  target[name+'Error'] )
+                    }else{
+                        let result = fn.apply(target,args )
                         if(result && typeof(result) === 'object'){
-
                             dispatch({
                                 type:result.type ? result.type : getActionTypes(`${target.__modelName}$$${name}`),
                                 data:result.data? result.data : result
                             } )
                         }
-                    },error ||  target[name+'Error'] )
+                    }
                 }
             }
 
