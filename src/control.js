@@ -1,6 +1,7 @@
 import {getActionTypes} from './model'
 import RTools from 'gfs-react-tools'
 import './utils'
+import extend from 'extend'
 
 /**
  * 控制器
@@ -77,12 +78,17 @@ export function Sync(anywhere){
             return function(){
 
                 var args = Array.prototype.slice.call(arguments)
+                var methodArg = args[args.length-1] || {}
+
+                if(typeof(methodArg)==='object' && methodArg.url){
+                    url = methodArg.url
+                }
 
                 return (dispatch)=>{
                     if(opts && typeof(opts.method) =='undefined' ){
                         opts.method = 'get'
                     }
-                    fetch(url,opts).then(function(){
+                    fetch(url,extend(opts,methodArg.url ||methodArg.body ?methodArg:{} ) ).then(function(){
 
                         let result = fn.apply(target,Array.prototype.slice.call(arguments).concat(args) )
 
