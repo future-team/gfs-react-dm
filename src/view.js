@@ -45,8 +45,8 @@ export  function View(action){
     return function(target){
 
         @connect(state => ({
-            [`${action.__modelName.split('$$')[0].toLowerCase()}`]: state[action.__modelName]
-        }), action)
+            [`${action && action.__modelName?action.__modelName.split('$$')[0].toLowerCase():'nothing'}`]: action ? state[action.__modelName]:{}
+        }), action ||{} )
         @bindingMixin
         class View extends target{
             constructor(props) {
