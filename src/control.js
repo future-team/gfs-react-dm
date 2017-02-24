@@ -1,4 +1,4 @@
-import {getActionTypes} from './model'
+import {DEFAULT_METHOD_FIX,DEFAULT} from './model'
 import RTools from 'gfs-react-tools'
 import './utils'
 import extend from 'extend'
@@ -7,8 +7,58 @@ import extend from 'extend'
  * 控制器
  * @class Control
  * */
-const fetch = RTools.fetch
+export const fetch = RTools.fetch
 let controlList = {}
+//todo 异步action和数据实现
+//todo 异步ajax中间件
+let curl = {
+    //use:
+    del:function(path,data){
+        path = path.indexOf('.')>=0?path.split('.'):Array.prototype.concat.call([],path)
+
+        return (dispatch)=>{
+            dispatch({
+                type:`${DEFAULT}${DEFAULT_METHOD_FIX}${this.__modelName}${DEFAULT_METHOD_FIX}del`,
+                path:path,
+                data:data
+            })
+        }
+    },
+    update:function(path,data){
+        if(arguments.length == 1){
+            data = arguments[0]
+            path = ''
+        }else{
+            path = path.indexOf('.')>=0?path.split('.'):Array.prototype.concat.call([],path)
+        }
+        return (dispatch)=>{
+            dispatch({
+                type:`${DEFAULT}${DEFAULT_METHOD_FIX}${this.__modelName}${DEFAULT_METHOD_FIX}update`,
+                path:path,
+                data:data
+            })
+        }
+    },
+    insert:function(path,data){
+        let params = []
+        if(arguments.length == 1){
+            params.push(arguments[0])
+
+        }else{
+            params = [path,data]
+        }
+        return this.update.apply(this,params)
+    },
+    save:function(path,data){
+        return (dispatch)=> {
+            dispatch({
+                type: `${DEFAULT}${DEFAULT_METHOD_FIX}${this.__modelName}${DEFAULT_METHOD_FIX}save`,
+                path: path.indexOf('.') >= 0 ? path.split('.') : Array.prototype.concat.call([], path),
+                data: data
+            })
+        }
+    }
+}
 
 //任意类型参数
 /**
@@ -94,20 +144,19 @@ export function Sync(anywhere){
                             let result = fn.apply(target,Array.prototype.slice.call(arguments).concat(args) )
 
                             if(result && typeof(result) === 'object'){
-
-                                dispatch({
-                                    type:result.type ? result.type : getActionTypes(`${target.__modelName}$$${name}`),
+                                dispatch(extend(result||{},{
+                                    type:`${target.__modelName}${DEFAULT_METHOD_FIX}${result.type ? result.type:name}`,//getActionTypes(`${target.__modelName}${DEFAULT_METHOD_FIX}${name}`),
                                     data:result.data? result.data : result
-                                } )
+                                }) )
                             }
                         },error ||  target[name+'Error'] )
                     }else{
                         let result = fn.apply(target,args )
                         if(result && typeof(result) === 'object'){
-                            dispatch({
-                                type:result.type ? result.type : getActionTypes(`${target.__modelName}$$${name}`),
+                            dispatch(extend(result||{},{
+                                type:`${target.__modelName}${DEFAULT_METHOD_FIX}${result.type ? result.type:name}`,
                                 data:result.data? result.data : result
-                            } )
+                            }) )
                         }
                     }
                 }
@@ -151,7 +200,7 @@ export function Sync(anywhere){
  *          }
  *      }
  * */
-export function Control(modelName,loadingbar,mock){
+export function Control(model={},loadingbar,mock){
 
     if(arguments.length === 2 ){
         mock = loadingbar
@@ -163,28 +212,27 @@ export function Control(modelName,loadingbar,mock){
         loadingbar && (fetch.addLoadingBar(loadingbar) )
     }
 
-    modelName = modelName && (modelName.toLowerCase().indexOf('model<=-1') ? modelName+'model':modelName).toLowerCase()
-
    return function(target){
-
-       target.prototype.__modelName = modelName
-
-       let control = controlList[modelName] = new target()
+       target = extend(target,curl)
+      // let control  = new target()
        //循环遍历方法，将返回
        //将方法的作用域改成对象本身
-       var t = new target()
+       var t = target
        var p ={}
        for(var item in t) {
-           p[item] = t[item] instanceof Function ? t[item].bind(control ) : t[item]
+           p[item] = t[item] instanceof Function ? t[item].bind(t ) : t[item]
        }
-
-       return p
+       model.controls = p
+       controlList[model.modelName] = model
+       target.__modelName = model.modelName
+       return model
        //todo 解决对象私有属性访问，同样是对象丢失造成
        //return {...target.prototype}
    }
 }
-
 export function getControl(modelName){
 
     return controlList[modelName.toLowerCase() ]
 }
+
+

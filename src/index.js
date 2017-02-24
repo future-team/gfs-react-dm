@@ -1,10 +1,11 @@
 export {Model} from './model'
-export {Control,Sync,getControl} from './control'
+export {Control,Sync,fetch} from './control'
 export {View} from './view'
 
 import extend from 'extend'
 import RTools from 'gfs-react-tools'
 import {getModels,emptyModels} from './model'
+import thunkMiddleware from 'redux-thunk'
 
 /**
  * 提供Model、View、Control、Sync、RTools等系列便捷类库
@@ -43,6 +44,12 @@ export function page(opts={}){
         }
     }
 
+    opts.middleware = [thunkMiddleware].concat(opts.middleware||[])
+
+    if(opts.debug || location.port!=''){
+        opts.middleware.push(require('redux-logger')() )
+    }
+
     let rtools = new RTools(extend({
         //可选
         middleware:[],
@@ -50,14 +57,15 @@ export function page(opts={}){
         module:null,
         //可选
         reducers:getModels(),
-        //可选
+        //可选n
         //devTools:DevTools,
         //可选 默认loadingbarComponent
         //bar:null,
         //可选  loadingbar平台（pc/wap/other）other直接使用bar字段作为参数
         //agent:'pc',
         //可选  react component放取的节点id
-        container:'root'
+        container:'root',
+        debug:false
     },opts) )
 
     emptyModels()

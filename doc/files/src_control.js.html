@@ -104,9 +104,10 @@
 
 <div class="file">
     <pre class="prettyprint linenums" id='src_code'>
-import {getActionTypes} from &#x27;./model&#x27;
+import {DEFAULT_METHOD_FIX,DEFAULT} from &#x27;./model&#x27;
 import RTools from &#x27;gfs-react-tools&#x27;
 import &#x27;./utils&#x27;
+import extend from &#x27;extend&#x27;
 
 /**
  * 控制器
@@ -114,6 +115,56 @@ import &#x27;./utils&#x27;
  * */
 const fetch = RTools.fetch
 let controlList = {}
+//todo 异步action和数据实现
+//todo 异步ajax中间件
+let curl = {
+    //use:
+    del:function(path,data){
+        path = path.indexOf(&#x27;.&#x27;)&gt;=0?path.split(&#x27;.&#x27;):Array.prototype.concat.call([],path)
+
+        return (dispatch)=&gt;{
+            dispatch({
+                type:&#x60;${DEFAULT}${DEFAULT_METHOD_FIX}${this.__modelName}${DEFAULT_METHOD_FIX}del&#x60;,
+                path:path,
+                data:data
+            })
+        }
+    },
+    update:function(path,data){
+        if(arguments.length == 1){
+            data = arguments[0]
+            path = &#x27;&#x27;
+        }else{
+            path = path.indexOf(&#x27;.&#x27;)&gt;=0?path.split(&#x27;.&#x27;):Array.prototype.concat.call([],path)
+        }
+        return (dispatch)=&gt;{
+            dispatch({
+                type:&#x60;${DEFAULT}${DEFAULT_METHOD_FIX}${this.__modelName}${DEFAULT_METHOD_FIX}update&#x60;,
+                path:path,
+                data:data
+            })
+        }
+    },
+    insert:function(path,data){
+        let params = []
+        if(arguments.length == 1){
+            params.push(arguments[0])
+
+        }else{
+            params = [path,data]
+        }
+        return this.update.apply(this,params)
+    },
+    save:function(path,data){
+        return (dispatch)=&gt; {
+            dispatch({
+                type: &#x60;${DEFAULT}${DEFAULT_METHOD_FIX}${this.__modelName}${DEFAULT_METHOD_FIX}save&#x60;,
+                path: path.indexOf(&#x27;.&#x27;) &gt;= 0 ? path.split(&#x27;.&#x27;) : Array.prototype.concat.call([], path),
+                data: data
+            })
+        }
+    }
+}
 
 //任意类型参数
 /**
@@ -183,23 +234,37 @@ export function Sync(anywhere){
             return function(){
 
                 var args = Array.prototype.slice.call(arguments)
+                var methodArg = args[args.length-1] || {}
+
+                if(typeof(methodArg)===&#x27;object&#x27; &amp;&amp; methodArg.url){
+                    url = methodArg.url
+                }
 
                 return (dispatch)=&gt;{
                     if(opts &amp;&amp; typeof(opts.method) ==&#x27;undefined&#x27; ){
                         opts.method = &#x27;get&#x27;
                     }
-                    fetch(url,opts).then(function(){
+                    if(url){
+                        fetch(url,extend(opts,methodArg.url ||methodArg.body ?methodArg:{} ) ).then(function(){
 
-                        let result = fn.apply(target,Array.prototype.slice.call(arguments).concat(args) )
+                            let result = fn.apply(target,Array.prototype.slice.call(arguments).concat(args) )
 
+                            if(result &amp;&amp; typeof(result) === &#x27;object&#x27;){
+                                dispatch(extend(result||{},{
+                                    type:&#x60;${target.__modelName}${DEFAULT_METHOD_FIX}${result.type ? result.type:name}&#x60;,//getActionTypes(&#x60;${target.__modelName}${DEFAULT_METHOD_FIX}${name}&#x60;),
+                                    data:result.data? result.data : result
+                                }) )
+                            }
+                        },error ||  target[name+&#x27;Error&#x27;] )
+                    }else{
+                        let result = fn.apply(target,args )
                         if(result &amp;&amp; typeof(result) === &#x27;object&#x27;){
-
-                            dispatch({
-                                type:result.type ? result.type : getActionTypes(&#x60;${target.__modelName}$$${name}&#x60;),
+                            dispatch(extend(result||{},{
+                                type:&#x60;${target.__modelName}${DEFAULT_METHOD_FIX}${result.type ? result.type:name}&#x60;,
                                 data:result.data? result.data : result
-                            } )
+                            }) )
                         }
-                    },error ||  target[name+&#x27;Error&#x27;] )
+                    }
                 }
             }
 
@@ -241,7 +306,7 @@ export function Sync(anywhere){
  *          }
  *      }
  * */
-export function Control(modelName,loadingbar,mock){
+export function Control(model,loadingbar,mock){
 
     if(arguments.length === 2 ){
         mock = loadingbar
@@ -253,22 +318,20 @@ export function Control(modelName,loadingbar,mock){
         loadingbar &amp;&amp; (fetch.addLoadingBar(loadingbar) )
     }
 
-    modelName = modelName &amp;&amp; (modelName.toLowerCase().indexOf(&#x27;model&lt;=-1&#x27;) ? modelName+&#x27;model&#x27;:modelName).toLowerCase()
-
    return function(target){
-
-       target.prototype.__modelName = modelName
-
-       let control = controlList[modelName] = new target()
+       target = extend(target,curl)
+      // let control  = new target()
        //循环遍历方法，将返回
        //将方法的作用域改成对象本身
-       var t = new target()
+       var t = target
        var p ={}
        for(var item in t) {
-           p[item] = t[item] instanceof Function ? t[item].bind(control ) : t[item]
+           p[item] = t[item] instanceof Function ? t[item].bind(t ) : t[item]
        }
-
-       return p
+       model.controls = p
+       controlList[model.modelName] = model
+       target.__modelName = model.modelName
+       return model
        //todo 解决对象私有属性访问，同样是对象丢失造成
        //return {...target.prototype}
    }

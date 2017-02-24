@@ -10,43 +10,49 @@ class TestModel {
 
     }
     static save(data, action){
-
         if(action.data){
             return data.merge(Immutable.fromJS(action.data) )
         }
     }
     static del(data, action){
         if(action.data){
+            console.dir('del')
             return data.merge(Immutable.fromJS(action.data) )
         }
     }
 }
 
-@Control('test')
-class TestControl {
-
-    constructor(){
-        this.classNames = 'testcontrol'
-
+class TestAction{
+    constructor(){}
+    showTest(){
+        console.dir('testaction')
     }
+}
+let action = new TestAction()
+
+
+@Control(TestModel)
+class TestControl {
     //Object.defineProperty(target, key, descriptor);
     @Sync('/test.json',{
         error:(err)=>{
             console.dir(err)
         }
     })
-    save(data,c){
+    static saveTest(data,c){
         //this.getChange()('age', 10)
 
-        setTimeout(()=>{
-            c.manualChange('age','通过manualChange改变age：10')
-        },2000)
-        data.age = 'ajax改变的age：'+data.age
-        return data
-    }
-    del(data){
 
-        return data
+        return ()=>{
+            this.update('age','ajax改变的age：'+data.age)
+        }
+
+        /*data.age = 'ajax改变的age：'+data.age
+        action.showTest()
+        return {
+            type:'save',
+            data:data
+        }*/
     }
 }
 
@@ -62,17 +68,23 @@ class TestComponent extends Component {
 
     componentDidMount(){
         setTimeout(()=>{
-            this.props.save(this)
+            this.props.saveTest(this)
+            this.props.insert({
+                name:'xiaomin'
+            })
         },1000)
+
     }
 
     static defaultProps={}
 
     render() {
+
         console.log('age:',this.props.testmodel.get('age') )
         return (
             <div>
                 {this.props.testmodel.get('age')}
+                <span style={{color:'red'}}>{this.props.testmodel.get('name')}</span>
             </div>
         )
     }

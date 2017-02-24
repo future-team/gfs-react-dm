@@ -1,10 +1,10 @@
 {
-  "name": "gfs-react-mvc",
-  "version": "0.1.7",
-  "description": "react redux流程简化",
+  "name": "gfs-react-dm",
+  "version": "1.0.1",
+  "description": "简化react和redux的繁杂流程，更简单的数据操作管理",
   "repository": {
     "type": "git",
-    "url": "git@github.com:future-team/gfs-react-mvc.git"
+    "url": "git@github.com:future-team/gfs-react-dm.git"
   },
   "author": {
     "name": "ainiderenxm",
@@ -26,7 +26,9 @@
     "handlebars": "^4.0.5",
     "immutable": "^3.8.1",
     "react-redux": "^5.0.2",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "redux-logger": "^2.8.1",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "gfs-doc": "^0.1.26",
@@ -83,9 +85,9 @@
     "prepublish": " npm run build"
   },
   "bugs": {
-    "url": "http://github.com/future-team/gfs-react-mvc/issues"
+    "url": "http://github.com/future-team/gfs-react-dm/issues"
   },
-  "homepage": "http://github.com/future-team/gfs-react-mvc",
+  "homepage": "http://github.com/future-team/gfs-react-dm",
   "main": "lib/",
   "license": "MIT"
 }

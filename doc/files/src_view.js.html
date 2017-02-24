@@ -104,8 +104,9 @@
 
 <div class="file">
     <pre class="prettyprint linenums" id='src_code'>
-import {bindingMixin} from &#x27;gfs-react-redux-twoway-binding&#x27;
+//import {bindingMixin} from &#x27;gfs-react-redux-twoway-binding&#x27;
 import { connect } from &#x27;react-redux&#x27;
+import extend from &#x27;extend&#x27;
 /**
  * 视图
  * @class View
@@ -146,22 +147,27 @@ import { connect } from &#x27;react-redux&#x27;
             }
         }
  * */
-export  function View(action){
+export  function View(actions){
 
     return function(target){
 
-        @connect(state =&gt; ({
-            [&#x60;${action.__modelName.split(&#x27;$$&#x27;)[0].toLowerCase()}&#x60;]: state[action.__modelName]
-        }), action)
-        @bindingMixin
-        class View extends target{
-            constructor(props) {
-                super(props)
-                this.setBinding(action.__modelName )
+        if(actions){
+
+            actions =Array.prototype.concat.call([],actions)
+            let controls = {}
+            for(let i=0,len=actions.length;i&lt;len;i++){
+                controls = extend(controls,actions[i].controls)
             }
+            return connect(function(state){
+                let stories = {}
+                for(let i=0,len=actions.length;i&lt;len;i++){
+                    stories[actions[i].modelName ] =  state[actions[i].modelName ]
+                }
+                return stories
+            },controls ||{})(target)
         }
 
-        return View
+        return target
     }
 }
 

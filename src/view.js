@@ -1,5 +1,6 @@
-import {bindingMixin} from 'gfs-react-redux-twoway-binding'
+//import {bindingMixin} from 'gfs-react-redux-twoway-binding'
 import { connect } from 'react-redux'
+import extend from 'extend'
 /**
  * 视图
  * @class View
@@ -40,22 +41,27 @@ import { connect } from 'react-redux'
             }
         }
  * */
-export  function View(action){
+export  function View(actions){
 
     return function(target){
 
-        @connect(state => ({
-            [`${action && action.__modelName?action.__modelName.split('$$')[0].toLowerCase():'nothing'}`]: action ? state[action.__modelName]:{}
-        }), action ||{} )
-        @bindingMixin
-        class View extends target{
-            constructor(props) {
-                super(props)
-                this.setBinding(action.__modelName )
+        if(actions){
+
+            actions =Array.prototype.concat.call([],actions)
+            let controls = {}
+            for(let i=0,len=actions.length;i<len;i++){
+                controls = extend(controls,actions[i].controls)
             }
+            return connect(function(state){
+                let stories = {}
+                for(let i=0,len=actions.length;i<len;i++){
+                    stories[actions[i].modelName ] =  state[actions[i].modelName ]
+                }
+                return stories
+            },controls ||{})(target)
         }
 
-        return View
+        return target
     }
 }
 
