@@ -119,18 +119,18 @@ let controlList = {}
 //todo 异步ajax中间件
 let curl = {
     //use:
-    del:function(path,data){
+    Del:function(path,data,modelName=this.__modelName){
         path = path.indexOf(&#x27;.&#x27;)&gt;=0?path.split(&#x27;.&#x27;):Array.prototype.concat.call([],path)
 
         return (dispatch)=&gt;{
             dispatch({
-                type:&#x60;${DEFAULT}${DEFAULT_METHOD_FIX}${this.__modelName}${DEFAULT_METHOD_FIX}del&#x60;,
+                type:&#x60;${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}del&#x60;,
                 path:path,
                 data:data
             })
         }
     },
-    update:function(path,data){
+    Update:function(path,data,modelName=this.__modelName){
         if(arguments.length == 1){
             data = arguments[0]
             path = &#x27;&#x27;
@@ -139,26 +139,31 @@ let curl = {
         }
         return (dispatch)=&gt;{
             dispatch({
-                type:&#x60;${DEFAULT}${DEFAULT_METHOD_FIX}${this.__modelName}${DEFAULT_METHOD_FIX}update&#x60;,
+                type:&#x60;${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}update&#x60;,
                 path:path,
                 data:data
             })
         }
     },
-    insert:function(path,data){
-        let params = []
+    Insert:function(path,data,modelName=this.__modelName){
         if(arguments.length == 1){
-            params.push(arguments[0])
-
+            data = arguments[0]
+            path = &#x27;&#x27;
         }else{
-            params = [path,data]
+            path = path.indexOf(&#x27;.&#x27;)&gt;=0?path.split(&#x27;.&#x27;):Array.prototype.concat.call([],path)
         }
-        return this.update.apply(this,params)
+        return (dispatch)=&gt;{
+            dispatch({
+                type:&#x60;${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}update&#x60;,
+                path:path,
+                data:data
+            })
+        }
     },
-    save:function(path,data){
+    Save:function(path,data,modelName=this.__modelName){
         return (dispatch)=&gt; {
             dispatch({
-                type: &#x60;${DEFAULT}${DEFAULT_METHOD_FIX}${this.__modelName}${DEFAULT_METHOD_FIX}save&#x60;,
+                type: &#x60;${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}save&#x60;,
                 path: path.indexOf(&#x27;.&#x27;) &gt;= 0 ? path.split(&#x27;.&#x27;) : Array.prototype.concat.call([], path),
                 data: data
             })
@@ -246,12 +251,12 @@ export function Sync(anywhere){
                     }
                     if(url){
                         fetch(url,extend(opts,methodArg.url ||methodArg.body ?methodArg:{} ) ).then(function(){
-
                             let result = fn.apply(target,Array.prototype.slice.call(arguments).concat(args) )
-
-                            if(result &amp;&amp; typeof(result) === &#x27;object&#x27;){
+                            if(result instanceof Function){
+                                result(dispatch)
+                            }else if(result &amp;&amp; typeof(result) === &#x27;object&#x27;){
                                 dispatch(extend(result||{},{
-                                    type:&#x60;${target.__modelName}${DEFAULT_METHOD_FIX}${result.type ? result.type:name}&#x60;,//getActionTypes(&#x60;${target.__modelName}${DEFAULT_METHOD_FIX}${name}&#x60;),
+                                    type:&#x60;${target.__modelName}${DEFAULT_METHOD_FIX}${result.type ? result.type:name}&#x60;,
                                     data:result.data? result.data : result
                                 }) )
                             }
@@ -319,7 +324,11 @@ export function Control(model={},loadingbar,mock){
     }
 
    return function(target){
-       target = extend(target,curl)
+       //target = extend(target,curl)
+       let name = target.name
+       for(var cItem in curl){
+           target[name.substr(0,1).toLowerCase()+name.substr(1)+cItem] = curl[cItem]
+       }
       // let control  = new target()
        //循环遍历方法，将返回
        //将方法的作用域改成对象本身
