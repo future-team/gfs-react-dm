@@ -43,9 +43,7 @@ class TestControl {
         //this.getChange()('age', 10)
 
 
-        return ()=>{
-            this.update('age','ajax改变的age：'+data.age)
-        }
+        return this.testControlUpdate('age','ajax改变的age：'+data.age)
 
         /*data.age = 'ajax改变的age：'+data.age
         action.showTest()
@@ -69,7 +67,7 @@ class TestComponent extends Component {
     componentDidMount(){
         setTimeout(()=>{
             this.props.saveTest(this)
-            this.props.insert({
+            this.props.testControlInsert({
                 name:'xiaomin'
             })
         },1000)

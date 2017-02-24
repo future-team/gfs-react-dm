@@ -1,24 +1,29 @@
+<p style="color:red">文档持续完善中...</p>
 <p>
 将react、redux整合一起使用的繁琐步骤进行封装，对外提供<code>@View</code>、<code>@Control</code>、<code>@Model</code>分别对应react component、redux action、redux store调用
 </p>
 <ul>
-    <li style="margin-bottom:8px"><strong>@View</strong> 利用react-redux中提供的connect包装器将store、control（action）与Component建立联系，使Component具有操作store和调用control的能力，Component中可直接使用<code>manualChange</code>对store数据进行更新</li>
-    <li style="margin-bottom:8px"><strong>@Control</strong> 拥有与服务端数据通信功能，获取数据后可决定是否更新store或直接什么都不做，提供<code>@Sync</code>装饰器；被装饰的类会返回一个对象列表，提供给Component调用</li>
-    <li><strong>@Model</strong> 字段映射关系和数据操作，包括对数据的增删改查；</li>
+    <li style="margin-bottom:8px"><strong>@View</strong> 利用react-redux中提供的connect包装器将store、control（action）与Component建立联系，使Component具有操作store和调用control的能力，Component中可直接使用<code>this.props[update/del/insert/save]</code>对store数据进行更新</li>
+    <li style="margin-bottom:8px"><strong>@Control</strong> 拥有与服务端数据通信功能，获取数据后可决定是否更新store或直接什么都不做，提供<code>@Sync</code>装饰器；被装饰的类会返回一个对象列表，提供给Component调用，此外还提供默认的数据修改方法：update、save、del、insert</li>
+    <li><strong>@Model</strong> 字段映射关系和数据操作，包括对数据的增删改查；默认提供<code>del</code>、<code>update</code>、<code>save</code>等store方法</li>
 </ul>
-<p><a href="https://github.com/future-team/generator-future-static" target="_blank">generator-future-static</a>提供对应脚手架项目<code>webpack-react-mvc</code></p>
+<p><a href="https://github.com/future-team/generator-future-static" target="_blank">generator-future-static</a>提供对应脚手架项目<code>webpack-react</code></p>
 <p>
     最后<code>page</code>方法将决定具体哪个Component在页面的哪个节点中渲染。
 </p>
 <h3>安装</h3>
 <pre class="code prettyprint">
-npm install gfs-react-mvc --save
+npm install gfs-react-dm --save
+</pre>
+<h3>表单元素数据更新方式</h3>
+<pre class="code prettyprint">
+    后续完善...
 </pre>
 <h3>使用(一个改变年龄的简单例子)</h3>
 * View
 <pre class="code prettyprint">
 import React, { Component /*,PropTypes*/} from 'react'
-import {Model,Control,Sync,View,page} from 'gfs-react-mvc'
+import {Model,Control,Sync,View,page} from 'gfs-react-dm'
 
 @View(TestControl)
 class TestComponent extends Component {
@@ -51,58 +56,32 @@ page(TestComponent)
 
 * Control
 <pre class="code prettyprint">
-import {Model,Control,Sync,View,page} from 'gfs-react-mvc'
+import {Control,fetch} from 'gfs-react-dm'
+import TestModel from '../model/TestModel'
 
-@Control('test')
+@Control(TestModel)
 class TestControl {
 
-    constructor(){
-        this.classNames = 'testcontrol'
+    static changeAge(){
 
-    }
+        return (dispatch)=>{
+            fetch('/test.json',/*params*/).then((data)=>{
+                //control中默认提供update、del、insert、save四种操作数据方法，会根据不同的control名生成，如下根据testControl生成的方法testControlUpdate
 
-    @Sync('/test.json',{
-        error:(err)=>{
-            console.dir(err)
+                dispatch(this.testControlUpdate('age','ajax改变的age：'+data.age) )
+            })
         }
-    })
-    changeAge(data,c){
-
-        setTimeout(()=>{
-            c.manualChange('age','通过manualChange改变age：10')
-        },2000)
-        data.age = 'ajax改变的age：'+data.age
-        return data
-    }
-    del(data){
-
-        return data
     }
 }
 </pre>
 
 * Model
 <pre class="code prettyprint">
-import {Model,Control,Sync,View,page} from 'gfs-react-mvc'
+import {Model} from 'gfs-react-dm'
 
 @Model
 class TestModel {
 
     static age = 20
-    static xq = {}
-    constructor(){
-
-    }
-    static changeAge(data, action){
-
-        if(action.data){
-            return data.merge(Immutable.fromJS(action.data) )
-        }
-    }
-    static del(data, action){
-        if(action.data){
-            return data.merge(Immutable.fromJS(action.data) )
-        }
-    }
 }
 </pre>

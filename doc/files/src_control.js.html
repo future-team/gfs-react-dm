@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, minimal-ui" />
-    <title>src/control.js - gfs-react-mvc</title>
+    <title>src/control.js - gfs-react-dm</title>
   
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
@@ -22,9 +22,9 @@
                 </button>
                <a class="navbar-brand mainlogo" href="">
              
-            <img alt="gfs-react-mvc" src="../assets/css/logo.png" title="gfs-react-mvc">
+            <img alt="gfs-react-dm" src="../assets/css/logo.png" title="gfs-react-dm">
             
-                gfs-react-mvc
+                gfs-react-dm
           </a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
@@ -113,7 +113,7 @@ import extend from &#x27;extend&#x27;
  * 控制器
  * @class Control
  * */
-const fetch = RTools.fetch
+export const fetch = RTools.fetch
 let controlList = {}
 //todo 异步action和数据实现
 //todo 异步ajax中间件
@@ -306,7 +306,7 @@ export function Sync(anywhere){
  *          }
  *      }
  * */
-export function Control(model,loadingbar,mock){
+export function Control(model={},loadingbar,mock){
 
     if(arguments.length === 2 ){
         mock = loadingbar
@@ -336,11 +336,12 @@ export function Control(model,loadingbar,mock){
        //return {...target.prototype}
    }
 }
-
 export function getControl(modelName){
 
     return controlList[modelName.toLowerCase() ]
 }
+
+
 
     </pre>
 </div>

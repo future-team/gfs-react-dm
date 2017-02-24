@@ -1,6 +1,7 @@
 export {Model} from './model'
 export {Control,Sync,fetch} from './control'
 export {View} from './view'
+//export {binding} from './valuelink'
 
 import extend from 'extend'
 import RTools from 'gfs-react-tools'

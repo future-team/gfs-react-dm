@@ -13,18 +13,18 @@ let controlList = {}
 //todo 异步ajax中间件
 let curl = {
     //use:
-    del:function(path,data){
+    Del:function(path,data,modelName=this.__modelName){
         path = path.indexOf('.')>=0?path.split('.'):Array.prototype.concat.call([],path)
 
         return (dispatch)=>{
             dispatch({
-                type:`${DEFAULT}${DEFAULT_METHOD_FIX}${this.__modelName}${DEFAULT_METHOD_FIX}del`,
+                type:`${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}del`,
                 path:path,
                 data:data
             })
         }
     },
-    update:function(path,data){
+    Update:function(path,data,modelName=this.__modelName){
         if(arguments.length == 1){
             data = arguments[0]
             path = ''
@@ -33,26 +33,31 @@ let curl = {
         }
         return (dispatch)=>{
             dispatch({
-                type:`${DEFAULT}${DEFAULT_METHOD_FIX}${this.__modelName}${DEFAULT_METHOD_FIX}update`,
+                type:`${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}update`,
                 path:path,
                 data:data
             })
         }
     },
-    insert:function(path,data){
-        let params = []
+    Insert:function(path,data,modelName=this.__modelName){
         if(arguments.length == 1){
-            params.push(arguments[0])
-
+            data = arguments[0]
+            path = ''
         }else{
-            params = [path,data]
+            path = path.indexOf('.')>=0?path.split('.'):Array.prototype.concat.call([],path)
         }
-        return this.update.apply(this,params)
+        return (dispatch)=>{
+            dispatch({
+                type:`${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}update`,
+                path:path,
+                data:data
+            })
+        }
     },
-    save:function(path,data){
+    Save:function(path,data,modelName=this.__modelName){
         return (dispatch)=> {
             dispatch({
-                type: `${DEFAULT}${DEFAULT_METHOD_FIX}${this.__modelName}${DEFAULT_METHOD_FIX}save`,
+                type: `${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}save`,
                 path: path.indexOf('.') >= 0 ? path.split('.') : Array.prototype.concat.call([], path),
                 data: data
             })
@@ -140,12 +145,12 @@ export function Sync(anywhere){
                     }
                     if(url){
                         fetch(url,extend(opts,methodArg.url ||methodArg.body ?methodArg:{} ) ).then(function(){
-
                             let result = fn.apply(target,Array.prototype.slice.call(arguments).concat(args) )
-
-                            if(result && typeof(result) === 'object'){
+                            if(result instanceof Function){
+                                result(dispatch)
+                            }else if(result && typeof(result) === 'object'){
                                 dispatch(extend(result||{},{
-                                    type:`${target.__modelName}${DEFAULT_METHOD_FIX}${result.type ? result.type:name}`,//getActionTypes(`${target.__modelName}${DEFAULT_METHOD_FIX}${name}`),
+                                    type:`${target.__modelName}${DEFAULT_METHOD_FIX}${result.type ? result.type:name}`,
                                     data:result.data? result.data : result
                                 }) )
                             }
@@ -213,7 +218,11 @@ export function Control(model={},loadingbar,mock){
     }
 
    return function(target){
-       target = extend(target,curl)
+       //target = extend(target,curl)
+       let name = target.name
+       for(var cItem in curl){
+           target[name.substr(0,1).toLowerCase()+name.substr(1)+cItem] = curl[cItem]
+       }
       // let control  = new target()
        //循环遍历方法，将返回
        //将方法的作用域改成对象本身
