@@ -45,3 +45,4 @@ jscoverage_lib/
 example/
 src/
 test/
+.vscode/

@@ -13,18 +13,50 @@ let controlList = {}
 //todo 异步ajax中间件
 let curl = {
     //use:
-    Del:function(path,data,modelName=this.__modelName){
+    /**
+     * 删除store中某条数据
+     * @method del
+     * @param path {string} 需要被删除的属性地址，根据具体的对象结构，例如一个结构为：var data={name:'test',other:{age:18}}的对象，如果想删除age的值应该是这样:this.del('data.other.age')
+     * @param modelName {string} model名字，默认是绑定model之后的modelname
+     * @return Function
+     * @example
+        $Control(TestModel)
+        class TestControl {
+            static delTest(data,c){
+                return this.del('age')
+            }
+        }
+     */
+    del:function(path,data,modelName=this.__modelName){
         path = path.indexOf('.')>=0?path.split('.'):Array.prototype.concat.call([],path)
 
         return (dispatch)=>{
             dispatch({
-                type:`${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}del`,
+                type:this.getModelName('del',true,modelName),//`${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}del`,
                 path:path,
                 data:data
             })
         }
     },
-    Update:function(path,data,modelName=this.__modelName){
+    /**
+     * 更新store中某条数据
+     * @method del
+     * @param path {string} 需要被删除的属性地址，根据具体的对象结构，例如一个结构为：var data={name:'test',other:{age:18}}的对象，如果想修改age的值应该是这样:this.update('data.other.age',20)
+     * @param modelName {string} model名字，默认是绑定model之后的modelname
+     * @return Function
+     * @example
+        $Control(TestModel)
+        class TestControl {
+            static updateTest(data,c){
+                return (dispatch)=>{
+                    fetch('/test').then((data)=>{
+                        dispatch(this.update('age',data.age) )
+                    })
+                }
+            }
+        }
+     */
+    update:function(path,data,modelName=this.__modelName){
         if(arguments.length == 1){
             data = arguments[0]
             path = ''
@@ -33,13 +65,33 @@ let curl = {
         }
         return (dispatch)=>{
             dispatch({
-                type:`${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}update`,
+                type:this.getModelName('update',true,modelName),//`${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}update`,
                 path:path,
                 data:data
             })
         }
     },
-    Insert:function(path,data,modelName=this.__modelName){
+    /**
+     * 插入store中某条数据
+     * @method insert
+     * @param path {string} 需要被删除的属性地址，根据具体的对象结构，例如一个结构为：var data={name:'test',other:{age:18}}的对象，如果想要在data中新增一些字段应该这样:this.insert({sex:'男'})
+     * @param modelName {string} model名字，默认是绑定model之后的modelname
+     * @return Function
+     * @example
+        $Control(TestModel)
+        class TestControl {
+            static insertTest(data,c){
+                return (dispatch)=>{
+                    fetch('/test').then((data)=>{
+                        dispatch(this.insert({
+                            sex:'男'
+                        }) )
+                    })
+                }
+            }
+        }
+     */
+    insert:function(path,data,modelName=this.__modelName){
         if(arguments.length == 1){
             data = arguments[0]
             path = ''
@@ -48,16 +100,34 @@ let curl = {
         }
         return (dispatch)=>{
             dispatch({
-                type:`${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}update`,
+                type:this.getModelName('update',true,modelName),//`${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}update`,
                 path:path,
                 data:data
             })
         }
     },
-    Save:function(path,data,modelName=this.__modelName){
+    /**
+     * 保存store中某条数据
+     * @method save
+     * @param path {string} 跟update一样
+     * @param modelName {string} model名字，默认是绑定model之后的modelname
+     * @return Function
+     * @example
+        $Control(TestModel)
+        class TestControl {
+            static saveTest(data,c){
+                return (dispatch)=>{
+                    fetch('/test').then((data)=>{
+                        dispatch(this.save('age',data.age) )
+                    })
+                }
+            }
+        }
+     */
+    save:function(path,data,modelName=this.__modelName){
         return (dispatch)=> {
             dispatch({
-                type: `${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}save`,
+                type: this.getModelName('save',true,modelName),//`${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}save`,
                 path: path.indexOf('.') >= 0 ? path.split('.') : Array.prototype.concat.call([], path),
                 data: data
             })
@@ -67,7 +137,7 @@ let curl = {
 
 //任意类型参数
 /**
- * 异步操作，Sync是一个装饰器（Decorator），用于装饰Control类中的方法，将原有的方法变成一个异步成功调用后执行结果方法，被装饰的方法需要返回数据或false，决定是否更新store刷新节点。
+ * 异步操作，<strong style="color:red">IE9以下不建议使用</strong>，Sync是一个装饰器（Decorator），用于装饰Control类中的方法，将原有的方法变成一个异步成功调用后执行结果方法，被装饰的方法需要返回数据或false，决定是否更新store刷新节点。
  * - 由Sync装饰后的方法，其作用域为Control，依然可以调用类中其他方法
  * - Sync参数error可以为Control中xxxError命名的方法替代，“xxx”命名规则必须与Sync装饰的方法名一致
  * - 被装饰后的方法在View中调用时传入的参数将已第二个为准，第一个参数将永远是异步执行后的结果
@@ -98,6 +168,37 @@ let curl = {
  *              if(data){
  *                  //返回数据更新页面节点信息
  *                  return data
+ *              }
+ *              //不做任何改变
+ *              return false
+ *          } 
+ *          $Sync('/del',{
+ *              method:'get'
+ *          })
+ *          del(data){
+ *              //此处data是异步请求后服务器返回的结果
+ *              if(data){
+ *                  //返回数据更新页面节点信息
+ *                  return {
+ *                      //手动指定model对应方法
+ *                      type:this.getModelName('del'),
+ *                      data:data
+ *                  }
+ *              }
+ *              //不做任何改变
+ *              return false
+ *          }
+ *          //也可直接使用
+ *          $Sync()
+ *          update(data){
+ *              //此处data是异步请求后服务器返回的结果
+ *              if(data){
+ *                  //返回数据更新页面节点信息
+ *                  return {
+ *                      //手动指定model对应方法
+ *                      type:this.getModelName('update'),
+ *                      data:data
+ *                  }
  *              }
  *              //不做任何改变
  *              return false
@@ -151,7 +252,7 @@ export function Sync(anywhere){
                             }else if(result && typeof(result) === 'object'){
                                 dispatch(extend(result||{},{
                                     type:`${target.__modelName}${DEFAULT_METHOD_FIX}${result.type ? result.type:name}`,
-                                    data:result.data? result.data : result
+                                    data:result.data? result.data : {}
                                 }) )
                             }
                         },error ||  target[name+'Error'] )
@@ -160,7 +261,7 @@ export function Sync(anywhere){
                         if(result && typeof(result) === 'object'){
                             dispatch(extend(result||{},{
                                 type:`${target.__modelName}${DEFAULT_METHOD_FIX}${result.type ? result.type:name}`,
-                                data:result.data? result.data : result
+                                data:result.data? result.data : {}
                             }) )
                         }
                     }
@@ -179,22 +280,33 @@ export function Sync(anywhere){
  * 此方法是一个装饰器，只能用于类，被装饰后的类会变成对象列表（JSON）格式，主要目的是传递给组件使用，通过redux connect连接。
  * 被装饰的类将成为一个控制器，处理异步数据逻辑或业务逻辑，将数据传递给视图或服务器
  * @method Control
- * @param modelName {string} 实体类名字，全部小写，可以不加model后缀
+ * @param modelName {object} 实体类对象
  * @param loadingbar {Loadingbar} 废弃
  * @param mock {Mock} 废弃
  * @return object
  * @example
  *      import {Sync,Control} from 'gfs-react-mvc'
+ *      import TestModel from '../model/TestModel'
  *      //这里由于@为文档关键符号，所以下面将以$代替
- *      //@Control('testmodel')
- *      $Control('testmodel')
+ *      //@Control(TestModel)
  *      class TestControl{
  *          constructor(){}
+ *          static changeAge(){
+ *
+ *               return (dispatch)=>{
+ *                   fetch('/test.json'[,params]).then((data)=>{
+ *                       //control中默认提供update、del、insert、save四种操作数据方法，会根据不同的control名生成，如下根据testControl生成的方法testControlUpdate
+ *
+ *                       dispatch(this.testControlUpdate('age','ajax改变的age：'+data.age) )
+ *                   })
+ *               }
+ *           }
+ *          //不建议使用下列方式
  *          //这里由于@为文档关键符号，所以下面将以$代替
  *          $Sync('/test',{
  *              method:'get'
  *          })
- *          save(data){
+ *          static save(data){
  *              //此处data是异步请求后服务器返回的结果
  *              if(data){
  *                  //返回数据更新页面节点信息
@@ -219,10 +331,7 @@ export function Control(model={},loadingbar,mock){
 
    return function(target){
        //target = extend(target,curl)
-       let name = target.name
-       for(var cItem in curl){
-           target[name.substr(0,1).toLowerCase()+name.substr(1)+cItem] = curl[cItem]
-       }
+       //let name = ''//target.name||''
       // let control  = new target()
        //循环遍历方法，将返回
        //将方法的作用域改成对象本身
@@ -233,7 +342,22 @@ export function Control(model={},loadingbar,mock){
        }
        model.controls = p
        controlList[model.modelName] = model
+
+       for(var cItem in curl){
+           target[/*name.replace(/^.{0,1}/,function(c){return c.toLowerCase()})+cItem.replace(/^.{0,1}/,function(c){return c.toUpperCase()})*/cItem] = curl[cItem]
+       }
        target.__modelName = model.modelName
+       /**
+        * 获取model方法名全名，在未传任何值时返回方法前缀
+        * @method getModelName
+        * @param actionName {string} default='',方法名，可选
+        * @param isDefault {boolean} 是否获取系统中提供的方法名,默认false，可选
+        * @param modelName {string} model名字，可选
+        * @return string
+        */
+       target.getModelName= function(actionName='',isDefault=false,modelName = target.__modelName){
+           return `${isDefault?DEFAULT+DEFAULT_METHOD_FIX:''}${modelName}${DEFAULT_METHOD_FIX}${actionName}`
+       }
        return model
        //todo 解决对象私有属性访问，同样是对象丢失造成
        //return {...target.prototype}

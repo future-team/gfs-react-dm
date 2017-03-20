@@ -41,9 +41,7 @@ class TestControl {
     })
     static saveTest(data,c){
         //this.getChange()('age', 10)
-
-
-        return this.testControlUpdate('age','ajax改变的age：'+data.age)
+        return this.update('age','ajax改变的age：'+data.age)
 
         /*data.age = 'ajax改变的age：'+data.age
         action.showTest()
@@ -51,6 +49,9 @@ class TestControl {
             type:'save',
             data:data
         }*/
+    }
+    static insertTest(data){
+          return this.insert(data)
     }
 }
 
@@ -67,7 +68,7 @@ class TestComponent extends Component {
     componentDidMount(){
         setTimeout(()=>{
             this.props.saveTest(this)
-            this.props.testControlInsert({
+            this.props.insertTest({
                 name:'xiaomin'
             })
         },1000)

@@ -8,7 +8,7 @@ import extend from 'extend'
 /**
  * 一个装饰器方法，用于装饰类，被装饰的类为页面视图，或者说是react的component，并不是每一个component都需要被装饰
  * @method View
- * @param action {object} control对象
+ * @param action {object} control对象，可以是一个数组，比如：View([TestControl,Test2Control] )
  * @return class
  * @example
  *

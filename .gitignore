@@ -45,3 +45,4 @@ bower_components/
 dist/
 examples/dist
 lib/
+.vscode/

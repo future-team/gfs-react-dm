@@ -61,7 +61,7 @@ function implement(target={},modelName='',param={property:{},method:{}},fix=''){
 }
 
 /**
- * 一个类装饰器，被装饰的类会变成store
+ * 一个类装饰器，被装饰的类会变成store，默认不需要额外提供对数据操作的方法，在control中默认会提供del、update、insert等数据操作方法；如果有特殊需求无法满足使用场景可按照example中给出的方式自行编写数据处理方法
  * @method Model
  * @param target {object} 被包装的对象
  * @example
@@ -74,15 +74,21 @@ function implement(target={},modelName='',param={property:{},method:{}},fix=''){
             //数据模型
             static age = 20
             static xq = {}
-            constructor(){
-
-            }
+            //可以自行定义数据操作方法，在control中通过
+            //dispatch({
+            //    type:`testmodel$$save`,
+            //    data:data
+            //})
+            //这种方式变更数据，其中type值的组成是通过：类名（全小写）+ 方法名组成
             static save(data, action){
-
                 if(action.data){
                     return data.merge(Immutable.fromJS(action.data) )
                 }
             }
+            //dispatch({
+            //    type:`testmodel$$del`,
+            //    data:data
+            //})
             static del(data, action){
                 if(action.data){
                     return data.merge(Immutable.fromJS(action.data) )

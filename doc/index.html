@@ -169,9 +169,9 @@ class TestControl {
 
         return (dispatch)=>{
             fetch('/test.json',/*params*/).then((data)=>{
-                //control中默认提供update、del、insert、save四种操作数据方法，会根据不同的control名生成，如下根据testControl生成的方法testControlUpdate
+                //control中默认提供update、del、insert、save四种操作数据方法
 
-                dispatch(this.testControlUpdate('age','ajax改变的age：'+data.age) )
+                dispatch(this.update('age','ajax改变的age：'+data.age) )
             })
         }
     }
