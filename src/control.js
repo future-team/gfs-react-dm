@@ -320,13 +320,11 @@ export function Sync(anywhere){
 export function Control(model={},loadingbar,mock){
 
     if(arguments.length === 2 ){
-        mock = loadingbar
-        mock && (fetch.addMock(mock) )
+        RTools.addLoadingBar(loadingbar)
     }
 
     if(arguments.length === 3){
-        mock && (fetch.addMock(mock))
-        loadingbar && (fetch.addLoadingBar(loadingbar) )
+        RTools.addMock(mock)
     }
 
    return function(target){

@@ -16,14 +16,18 @@ let curl = {
         return data.deleteIn(action.path)
     },
     update:function(data,action){
+        
+        if(typeof(action.data) ==='string' && action.path){
+            return data.setIn(action.path,action.data)
+        }
         action.data = Immutable.fromJS(action.data)
         return action.path ? data.mergeIn(action.path,action.data ) : data.merge(action.data )
     },
     save:function(data,action){
-        return data.setIn(action.path,action.data ||{})
+        return data.setIn(action.path,action.data)
     },
     insert:function(data,action){
-        return data.setIn(action.path,action.data ||{})
+        return data.setIn(action.path,action.data)
     },
     query:function(data){
         return data

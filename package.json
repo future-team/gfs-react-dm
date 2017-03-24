@@ -1,6 +1,6 @@
 {
   "name": "gfs-react-dm",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "description": "简化react和redux的繁杂流程，更简单的数据操作管理",
   "repository": {
     "type": "git",
@@ -22,7 +22,7 @@
     "classnames": "^2.1.3",
     "extend": "^3.0.0",
     "gfs-react-redux-twoway-binding": "^0.1.0",
-    "gfs-react-tools": "^1.0.4",
+    "gfs-react-tools": "^1.0.6",
     "handlebars": "^4.0.5",
     "immutable": "^3.8.1",
     "react-redux": "^5.0.2",
