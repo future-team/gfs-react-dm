@@ -5,20 +5,9 @@ import Immutable from 'immutable'
 class TestModel {
 
     static age = 20
-    static xq = {}
+    static xq = null
     constructor(){
 
-    }
-    static save(data, action){
-        if(action.data){
-            return data.merge(Immutable.fromJS(action.data) )
-        }
-    }
-    static del(data, action){
-        if(action.data){
-            console.dir('del')
-            return data.merge(Immutable.fromJS(action.data) )
-        }
     }
 }
 
@@ -50,8 +39,8 @@ class TestControl {
             data:data
         }*/
     }
-    static insertTest(data){
-          return this.insert(data)
+    static insertTest(path,data){
+          return this.save(path,data)
     }
 }
 
@@ -68,9 +57,7 @@ class TestComponent extends Component {
     componentDidMount(){
         setTimeout(()=>{
             this.props.saveTest(this)
-            this.props.insertTest({
-                name:'xiaomin'
-            })
+            this.props.insertTest('xq.test.name','insert-xiaomin')
         },1000)
 
     }
@@ -83,7 +70,7 @@ class TestComponent extends Component {
         return (
             <div>
                 {this.props.testmodel.get('age')}
-                <span style={{color:'red'}}>{this.props.testmodel.get('name')}</span>
+                <span style={{color:'red'}}>{this.props.testmodel.getIn(['xq','test','name'])}</span>
             </div>
         )
     }

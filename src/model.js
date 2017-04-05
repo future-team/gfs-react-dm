@@ -11,12 +11,35 @@ let __gfs_mvc_m_actiontypes = {}
 export const DEFAULT_METHOD_FIX = '$$'
 export const DEFAULT='default'
 
+function getField(data,path){
+    var newpath = path.concat()
+    try{
+        for(var i=0,len=newpath.length,p,v;i<len;i++){
+            //如果path不是最后一个
+            if(i!=len){
+                p = newpath.slice(0,i+1)
+                v = data.getIn(p)
+                if(!v ){
+                    data = typeof(v)=='undefined' ? data.mergeIn(p.slice(0,p.length-1),Immutable.fromJS({
+                        [p[p.length-1]]:{}
+                    }) ) : data.setIn(p,{})
+                }
+            }
+        }
+        
+    }catch(ex){
+        console && console.warn && (console.warn(ex) )
+    }
+
+    return data
+}
+
 let curl = {
     del:function(data,action){
         return data.deleteIn(action.path)
     },
     update:function(data,action){
-        
+        data = getField(data,action.path)
         if(typeof(action.data) ==='string' && action.path){
             return data.setIn(action.path,action.data)
         }
@@ -24,9 +47,11 @@ let curl = {
         return action.path ? data.mergeIn(action.path,action.data ) : data.merge(action.data )
     },
     save:function(data,action){
+        data = getField(data,action.path)
         return data.setIn(action.path,action.data)
     },
     insert:function(data,action){
+        data = getField(data,action.path)
         return data.setIn(action.path,action.data)
     },
     query:function(data){
