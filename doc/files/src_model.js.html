@@ -117,19 +117,48 @@ let __gfs_mvc_m_actiontypes = {}
 export const DEFAULT_METHOD_FIX = &#x27;$$&#x27;
 export const DEFAULT=&#x27;default&#x27;
 
+function getField(data,path){
+    var newpath = path.concat()
+    try{
+        for(var i=0,len=newpath.length,p,v;i&lt;len;i++){
+            //如果path不是最后一个
+            if(i!=len){
+                p = newpath.slice(0,i+1)
+                v = data.getIn(p)
+                if(!v ){
+                    data = typeof(v)==&#x27;undefined&#x27; ? data.mergeIn(p.slice(0,p.length-1),Immutable.fromJS({
+                        [p[p.length-1]]:{}
+                    }) ) : data.setIn(p,{})
+                }
+            }
+        }
+        
+    }catch(ex){
+        console &amp;&amp; console.warn &amp;&amp; (console.warn(ex) )
+    }
+
+    return data
+}
+
 let curl = {
     del:function(data,action){
         return data.deleteIn(action.path)
     },
     update:function(data,action){
+        data = getField(data,action.path)
+        if(typeof(action.data) ===&#x27;string&#x27; &amp;&amp; action.path){
+            return data.setIn(action.path,action.data)
+        }
         action.data = Immutable.fromJS(action.data)
         return action.path ? data.mergeIn(action.path,action.data ) : data.merge(action.data )
     },
     save:function(data,action){
-        return data.setIn(action.path,action.data ||{})
+        data = getField(data,action.path)
+        return data.setIn(action.path,action.data)
     },
     insert:function(data,action){
-        return data.setIn(action.path,action.data ||{})
+        data = getField(data,action.path)
+        return data.setIn(action.path,action.data)
     },
     query:function(data){
         return data
@@ -167,7 +196,8 @@ function implement(target={},modelName=&#x27;&#x27;,param={property:{},method:{}
 }
 
 /**
- * 一个类装饰器，被装饰的类会变成store，默认不需要额外提供对数据操作的方法，在control中默认会提供del、update、insert等数据操作方法；如果有特殊需求无法满足使用场景可按照example中给出的方式自行编写数据处理方法
+ * 一个类装饰器，被装饰的类会变成store，默认不需要额外提供对数据操作的方法，在control中默认会提供del、update、insert等数据操作方法；如果有特殊需求无法满足使用场景可按照example中给出的方式自行编写数据处理方法&lt;br /&gt;
+ * &lt;strong style=&quot;color:red&quot;&gt;注意：model类中&#x60;__name&#x60;属性必须要有，这是为了能在各个component正常使用model必备的一个属性,必须小写，默认会在字符串后面添加上&quot;model&quot;,例如：&#x60;static __name=&#x27;test&#x27;&#x60;,那么在实际中运用应该是this.props.testmodel&lt;/strong&gt;
  * @method Model
  * @param target {object} 被包装的对象
  * @example
@@ -177,6 +207,8 @@ function implement(target={},modelName=&#x27;&#x27;,param={property:{},method:{}
  *       //@Model
  *       $Model
          class TestModel {
+            //__name必须要有，这是为了能再各个component正常使用model必备的一个属性,必须小写
+            static __name = &#x27;testmodel&#x27;
             //数据模型
             static age = 20
             static xq = {}
@@ -205,7 +237,14 @@ function implement(target={},modelName=&#x27;&#x27;,param={property:{},method:{}
 export  function Model(target){
     let params={}
     //读取字段组成新的对象
-    let modelName = target.name.toLowerCase()
+    if(typeof(target.__name) == &#x27;undefined&#x27; ){
+        console &amp;&amp; console.warn(&#x27;[create model error] &#x27;,&#x27;Model中必须存在__name属性，并赋予store名称，例如: static __name=&quot;testmodel&quot;&#x27;)
+        return {
+            modelName:&#x27;&#x27;,
+            store:null
+        }
+    }
+    let modelName = target.__name.toLowerCase()
 
     if(modelName.indexOf(&#x27;model&#x27;)&lt;=-1){
         modelName+=&#x27;model&#x27;

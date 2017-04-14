@@ -185,7 +185,7 @@
             
         
         
-        <a href="../files/src_model.js.html#l63"><code>src&#x2F;model.js:63</code></a>
+        <a href="../files/src_model.js.html#l92"><code>src&#x2F;model.js:92</code></a>
         
         </p>
 
@@ -196,7 +196,8 @@
     </div>
 
     <div class="description well well-small sign-left3">
-        <div class="stdoc-code"><p>一个类装饰器，被装饰的类会变成store，默认不需要额外提供对数据操作的方法，在control中默认会提供del、update、insert等数据操作方法；如果有特殊需求无法满足使用场景可按照example中给出的方式自行编写数据处理方法</p>
+        <div class="stdoc-code"><p>一个类装饰器，被装饰的类会变成store，默认不需要额外提供对数据操作的方法，在control中默认会提供del、update、insert等数据操作方法；如果有特殊需求无法满足使用场景可按照example中给出的方式自行编写数据处理方法<br />
+<strong style="color:red">注意：model类中<code>__name</code>属性必须要有，这是为了能在各个component正常使用model必备的一个属性,必须小写，默认会在字符串后面添加上"model",例如：<code>static __name=&#39;test&#39;</code>,那么在实际中运用应该是this.props.testmodel</strong></p>
 </div>
     </div>
 
@@ -261,6 +262,8 @@
   //@Model
   $Model
     class TestModel {
+       //__name必须要有，这是为了能再各个component正常使用model必备的一个属性,必须小写
+       static __name = &#39;testmodel&#39;
        //数据模型
        static age = 20
        static xq = {}

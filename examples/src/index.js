@@ -3,11 +3,11 @@ import Immutable from 'immutable'
 
 @Model
 class TestModel {
-
+    static __name = 'test'
     static age = 20
     static xq = null
     constructor(){
-
+       
     }
 }
 

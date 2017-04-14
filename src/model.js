@@ -90,7 +90,8 @@ function implement(target={},modelName='',param={property:{},method:{}},fix=''){
 }
 
 /**
- * 一个类装饰器，被装饰的类会变成store，默认不需要额外提供对数据操作的方法，在control中默认会提供del、update、insert等数据操作方法；如果有特殊需求无法满足使用场景可按照example中给出的方式自行编写数据处理方法
+ * 一个类装饰器，被装饰的类会变成store，默认不需要额外提供对数据操作的方法，在control中默认会提供del、update、insert等数据操作方法；如果有特殊需求无法满足使用场景可按照example中给出的方式自行编写数据处理方法<br />
+ * <strong style="color:red">注意：model类中`__name`属性必须要有，这是为了能在各个component正常使用model必备的一个属性,必须小写，默认会在字符串后面添加上"model",例如：`static __name='test'`,那么在实际中运用应该是this.props.testmodel</strong>
  * @method Model
  * @param target {object} 被包装的对象
  * @example
@@ -100,6 +101,8 @@ function implement(target={},modelName='',param={property:{},method:{}},fix=''){
  *       //@Model
  *       $Model
          class TestModel {
+            //__name必须要有，这是为了能再各个component正常使用model必备的一个属性,必须小写
+            static __name = 'testmodel'
             //数据模型
             static age = 20
             static xq = {}
@@ -128,7 +131,14 @@ function implement(target={},modelName='',param={property:{},method:{}},fix=''){
 export  function Model(target){
     let params={}
     //读取字段组成新的对象
-    let modelName = target.name.toLowerCase()
+    if(typeof(target.__name) == 'undefined' ){
+        console && console.warn('[create model error] ','Model中必须存在__name属性，并赋予store名称，例如: static __name="testmodel"')
+        return {
+            modelName:'',
+            store:null
+        }
+    }
+    let modelName = target.__name.toLowerCase()
 
     if(modelName.indexOf('model')<=-1){
         modelName+='model'

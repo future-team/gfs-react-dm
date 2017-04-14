@@ -184,7 +184,8 @@ import {Model} from 'gfs-react-dm'
 
 @Model
 class TestModel {
-
+    //必须赋予__name值，否则无法正确查找到store
+    static __name = 'test'
     static age = 20
 }
 </pre>
