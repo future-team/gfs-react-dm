@@ -39,9 +39,10 @@ let curl = {
         }
     },
     /**
-     * 更新store中某条数据
-     * @method del
+     * 更新store中某条数据,主要已合并为主，如果是想将新值覆盖旧值，请使用save方法
+     * @method update
      * @param path {string} 需要被删除的属性地址，根据具体的对象结构，例如一个结构为：var data={name:'test',other:{age:18}}的对象，如果想修改age的值应该是这样:this.update('data.other.age',20)
+     * @param data {string | objaect} 需要合并的值
      * @param modelName {string} model名字，默认是绑定model之后的modelname
      * @return Function
      * @example
@@ -75,6 +76,8 @@ let curl = {
      * 插入store中某条数据
      * @method insert
      * @param path {string} 需要被删除的属性地址，根据具体的对象结构，例如一个结构为：var data={name:'test',other:{age:18}}的对象，如果想要在data中新增一些字段应该这样:this.insert({sex:'男'})
+     * @param data {string | object} 需要保存的值，新的值会覆盖之前的值
+     * @param isImmutable {boolean} 是否将值转换为Immutable类型，默认为false，如果更新的值为object类型建议设置为true
      * @param modelName {string} model名字，默认是绑定model之后的modelname
      * @return Function
      * @example
@@ -91,7 +94,7 @@ let curl = {
             }
         }
      */
-    insert:function(path,data,modelName=this.__modelName){
+    insert:function(path,data,isImmutable=false,modelName=this.__modelName){
         if(arguments.length == 1){
             data = arguments[0]
             path = ''
@@ -102,7 +105,8 @@ let curl = {
             dispatch({
                 type:this.getModelName('update',true,modelName),//`${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}update`,
                 path:path,
-                data:data
+                data:data,
+                isImmutable:isImmutable
             })
         }
     },
@@ -110,6 +114,8 @@ let curl = {
      * 保存store中某条数据
      * @method save
      * @param path {string} 跟update一样
+     * @param data {string | object} 需要保存的值，新的值会覆盖之前的值
+     * @param isImmutable {boolean} 是否将值转换为Immutable类型，默认为false，如果更新的值为object类型建议设置为true
      * @param modelName {string} model名字，默认是绑定model之后的modelname
      * @return Function
      * @example
@@ -124,12 +130,13 @@ let curl = {
             }
         }
      */
-    save:function(path,data,modelName=this.__modelName){
+    save:function(path,data,isImmutable=false,modelName=this.__modelName){
         return (dispatch)=> {
             dispatch({
                 type: this.getModelName('save',true,modelName),//`${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}save`,
                 path: path.indexOf('.') >= 0 ? path.split('.') : Array.prototype.concat.call([], path),
-                data: data
+                data: data,
+                isImmutable:isImmutable
             })
         }
     }

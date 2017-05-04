@@ -48,11 +48,11 @@ let curl = {
     },
     save:function(data,action){
         data = getField(data,action.path)
-        return data.setIn(action.path,action.data)
+        return data.setIn(action.path,action.isImmutable ?Immutable.fromJS(action.data) : action.data)
     },
     insert:function(data,action){
         data = getField(data,action.path)
-        return data.setIn(action.path,action.data)
+        return data.setIn(action.path,action.isImmutable ?Immutable.fromJS(action.data) : action.data)
     },
     query:function(data){
         return data
