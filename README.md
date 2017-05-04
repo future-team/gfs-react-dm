@@ -7,7 +7,7 @@
 
 ```javascript
 
-npm install gfs-react-mvc --save
+npm install gfs-react-dm --save
 ```
 
 ## 使用
