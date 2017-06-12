@@ -44,7 +44,7 @@ let curl = {
             return data.setIn(action.path,action.data)
         }
         action.data = Immutable.fromJS(action.data)
-        return action.path ? data.mergeIn(action.path,action.data ) : data.merge(action.data )
+        return action.path ? data.mergeDeepIn(action.path,action.data ) : data.mergeDeep(action.data )
     },
     save:function(data,action){
         data = getField(data,action.path)
