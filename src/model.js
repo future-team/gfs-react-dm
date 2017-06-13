@@ -12,8 +12,8 @@ export const DEFAULT_METHOD_FIX = '$$'
 export const DEFAULT='default'
 
 function getField(data,path){
-    var newpath = path.concat()
     try{
+        var newpath = path.concat()
         for(var i=0,len=newpath.length,p,v;i<len;i++){
             //如果path不是最后一个
             if(i!=len){
@@ -57,7 +57,7 @@ let curl = {
         return action.path ? data.mergeDeepIn(action.path,action.data ) : data.mergeDeep(action.data )
     },
     updateWith:function(data,action){
-        data = getField(data,action.path)
+        //data = getField(data,action.path)
         if(typeof(action.data) ==='string' && action.path){
             return data.setIn(action.path,action.data)
         }
