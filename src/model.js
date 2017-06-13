@@ -34,6 +34,16 @@ function getField(data,path){
     return data
 }
 
+function merger(prev,next){
+    if( Immutable.List.isList(prev) &&  Immutable.List.isList(next)){
+        return next
+    }
+    if(prev && prev.mergeWith){
+        return prev.mergeWith(merger,next)
+    }
+    return next
+}
+
 let curl = {
     del:function(data,action){
         return data.deleteIn(action.path)
@@ -45,6 +55,14 @@ let curl = {
         }
         action.data = Immutable.fromJS(action.data)
         return action.path ? data.mergeDeepIn(action.path,action.data ) : data.mergeDeep(action.data )
+    },
+    updateWith:function(data,action){
+        data = getField(data,action.path)
+        if(typeof(action.data) ==='string' && action.path){
+            return data.setIn(action.path,action.data)
+        }
+        action.data = Immutable.fromJS(action.data)
+        return data.mergeWith(action.merge ? action.merge:merger,action.data )
     },
     save:function(data,action){
         data = getField(data,action.path)

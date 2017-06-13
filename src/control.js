@@ -73,6 +73,45 @@ let curl = {
         }
     },
     /**
+     * 更新store中某条数据，可自定义合并规则
+     * @method updateWith
+     * @param data {object} 需要合并的值
+     * @param merge {function} 自定义合并规则方法 
+     * @param modelName {string} model名字，默认是绑定model之后的modelname
+     * @return Function
+     * @example
+        $Control(TestModel)
+        class TestControl {
+            static updateTest(data,c){
+                return (dispatch)=>{
+                    fetch('/test').then((data)=>{
+                        dispatch(this.updateWith({
+                            names:['test','test1','test2']
+                        },function merger(prev,next){
+                            if( Immutable.List.isList(prev) &&  Immutable.List.isList(next)){
+                                return next
+                            }
+                            if(prev && prev.mergeWith){
+                                return prev.mergeWith(merger,next)
+                            }
+                            return next
+                        }) )
+                    })
+                }
+            }
+        }
+     */
+    updateWith:function(data,merge,modelName=this.__modelName){
+        
+        return (dispatch)=>{
+            dispatch({
+                type:this.getModelName('updateWith',true,modelName),//`${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}update`,
+                merge:merge||null,
+                data:data
+            })
+        }
+    },
+    /**
      * 插入store中某条数据
      * @method insert
      * @param path {string} 需要被删除的属性地址，根据具体的对象结构，例如一个结构为：var data={name:'test',other:{age:18}}的对象，如果想要在data中新增一些字段应该这样:this.insert({sex:'男'})

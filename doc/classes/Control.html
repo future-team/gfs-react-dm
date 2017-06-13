@@ -201,7 +201,7 @@
             
         
         
-        <a href="../files/src_control.js.html#l286"><code>src&#x2F;control.js:286</code></a>
+        <a href="../files/src_control.js.html#l325"><code>src&#x2F;control.js:325</code></a>
         
         </p>
 
@@ -641,7 +641,7 @@
             
         
         
-        <a href="../files/src_control.js.html#l355"><code>src&#x2F;control.js:355</code></a>
+        <a href="../files/src_control.js.html#l394"><code>src&#x2F;control.js:394</code></a>
         
         </p>
 
@@ -851,7 +851,7 @@
             
         
         
-        <a href="../files/src_control.js.html#l75"><code>src&#x2F;control.js:75</code></a>
+        <a href="../files/src_control.js.html#l114"><code>src&#x2F;control.js:114</code></a>
         
         </p>
 
@@ -1121,7 +1121,7 @@
             
         
         
-        <a href="../files/src_control.js.html#l113"><code>src&#x2F;control.js:113</code></a>
+        <a href="../files/src_control.js.html#l152"><code>src&#x2F;control.js:152</code></a>
         
         </p>
 
@@ -1371,7 +1371,7 @@
             
         
         
-        <a href="../files/src_control.js.html#l146"><code>src&#x2F;control.js:146</code></a>
+        <a href="../files/src_control.js.html#l185"><code>src&#x2F;control.js:185</code></a>
         
         </p>
 
@@ -2040,6 +2040,246 @@
            return (dispatch)=&gt;{
                fetch(&#39;/test&#39;).then((data)=&gt;{
                    dispatch(this.update(&#39;age&#39;,data.age) )
+               })
+           }
+       }
+   }</code></pre>
+</div>
+            </div>
+            <div class="btn-method-box">
+                <button class="btn btn-info btn-viewDemo" type="button">查看示例</button>
+                <button class="btn btn-info btn-editDemo" type="button">编辑代码</button>
+            </div>
+
+            <div class="device"></div>
+        </div>
+    
+</div>
+
+                
+                    <div id="method_updateWith" class="method item">
+    <h3 class="name">updateWith</h3>
+    <code>
+    updateWith
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        data
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        merge
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        modelName
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+    </code>
+
+    
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p class="foundat">
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_control.js.html#l75"><code>src&#x2F;control.js:75</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description well well-small sign-left3">
+        <div class="stdoc-code"><p>更新store中某条数据，可自定义合并规则</p>
+</div>
+    </div>
+
+    
+        <div class="params">
+            <h4>参数:</h4>
+            <div class="clearfix params-wap-table">
+                
+                    <div class="params-box">
+                        
+                            <code class="param-name">data</code>
+                            <span class="type">Object</span>
+                        
+
+                        
+
+                        <span class="param-description">
+                            <p>需要合并的值</p>
+
+                        </span>
+                    </div>
+                    
+                
+                    <div class="params-box">
+                        
+                            <code class="param-name">merge</code>
+                            <span class="type">Function</span>
+                        
+
+                        
+
+                        <span class="param-description">
+                            <p>自定义合并规则方法</p>
+
+                        </span>
+                    </div>
+                    
+                
+                    <div class="params-box">
+                        
+                            <code class="param-name">modelName</code>
+                            <span class="type">String</span>
+                        
+
+                        
+
+                        <span class="param-description">
+                            <p>model名字，默认是绑定model之后的modelname</p>
+
+                        </span>
+                    </div>
+                    
+                
+            </div>
+
+            <table class="table table-bordered params-pc-table">
+                <tr class='active'><th>参数名</th><th>类型</th><th>标识</th><th>描述</th></tr>
+                
+                    <tr class="param">
+                        
+                            <td> <code class="param-name">data</code>
+                            <td> <span class="type">Object</span>
+                        <td>
+                        
+
+                        
+                    </td>
+                    <td><div class="param-description">
+                        <p>需要合并的值</p>
+
+                    </div>
+
+                        
+                    </tr>
+                
+                    <tr class="param">
+                        
+                            <td> <code class="param-name">merge</code>
+                            <td> <span class="type">Function</span>
+                        <td>
+                        
+
+                        
+                    </td>
+                    <td><div class="param-description">
+                        <p>自定义合并规则方法</p>
+
+                    </div>
+
+                        
+                    </tr>
+                
+                    <tr class="param">
+                        
+                            <td> <code class="param-name">modelName</code>
+                            <td> <span class="type">String</span>
+                        <td>
+                        
+
+                        
+                    </td>
+                    <td><div class="param-description">
+                        <p>model名字，默认是绑定model之后的modelname</p>
+
+                    </div>
+
+                        
+                    </tr>
+                
+            </table>
+
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                    <p>Function</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+        <div class="example">
+            <h4>Example:</h4>
+            <ul class="nav nav-tabs example-list">
+                
+            </ul>
+            <div class="example-content ">
+                <div class="stdoc-code"><pre class="code prettyprint"><code>   $Control(TestModel)
+   class TestControl {
+       static updateTest(data,c){
+           return (dispatch)=&gt;{
+               fetch(&#39;/test&#39;).then((data)=&gt;{
+                   dispatch(this.updateWith({
+                       names:[&#39;test&#39;,&#39;test1&#39;,&#39;test2&#39;]
+                   },function merger(prev,next){
+                       if( Immutable.List.isList(prev) &amp;&amp;  Immutable.List.isList(next)){
+                           return next
+                       }
+                       if(prev &amp;&amp; prev.mergeWith){
+                           return prev.mergeWith(merger,next)
+                       }
+                       return next
+                   }) )
                })
            }
        }

@@ -1,6 +1,6 @@
 {
   "name": "gfs-react-dm",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "简化react和redux的繁杂流程，更简单的数据操作管理",
   "repository": {
     "type": "git",
