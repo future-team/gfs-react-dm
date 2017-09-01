@@ -26,6 +26,7 @@ import thunkMiddleware from 'redux-thunk'
  * @param opts.module {react component} 必填，需要渲染在页面的组件
  * @param opts.devTools {object} 可选，数据模型调试，可视化面板，可以查看数据模型结构
  * @param opts.bar {object} 可选，异步数据请求时加载状态栏
+* @param opts.debug {Boolean} 可选，是否是调试状态，调试状态下会输出日志信息
  * @param opts.agent {string} 可选，默认值为pc，三种可选值：pc、wap、other，other已bar字段对象为准
  * @param opts.container {string} 可选，默认为root，组件放在页面的容器id
  * @return RTools
@@ -47,7 +48,7 @@ export function page(opts={}){
 
     opts.middleware = [thunkMiddleware].concat(opts.middleware||[])
 
-    if(opts.debug || location.port!=''){
+    if(opts.debug || (typeof(opts.debug)=='undefined' && location.port!='') ){
         opts.middleware.push(require('redux-logger')() )
     }
 

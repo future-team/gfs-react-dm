@@ -2,7 +2,7 @@
     "project": {
         "name": "gfs-react-dm",
         "description": "<p style=\"color:red\">文档持续完善中...</p>\n<p>\n将react、redux整合一起使用的繁琐步骤进行封装，对外提供<code>@View</code>、<code>@Control</code>、<code>@Model</code>分别对应react component、redux action、redux store调用\n</p>\n<ul>\n    <li style=\"margin-bottom:8px\"><strong>@View</strong> 利用react-redux中提供的connect包装器将store、control（action）与Component建立联系，使Component具有操作store和调用control的能力，Component中可直接使用<code>this.props[update/del/insert/save]</code>对store数据进行更新</li>\n    <li style=\"margin-bottom:8px\"><strong>@Control</strong> 拥有与服务端数据通信功能，获取数据后可决定是否更新store或直接什么都不做，提供<code>@Sync</code>装饰器；被装饰的类会返回一个对象列表，提供给Component调用，此外还提供默认的数据修改方法：update、save、del、insert</li>\n    <li><strong>@Model</strong> 字段映射关系和数据操作，包括对数据的增删改查；默认提供<code>del</code>、<code>update</code>、<code>save</code>等store方法</li>\n</ul>\n<p><a href=\"https://github.com/future-team/generator-future-static\" target=\"_blank\">generator-future-static</a>提供对应脚手架项目<code>webpack-react</code></p>\n<p>\n    最后<code>page</code>方法将决定具体哪个Component在页面的哪个节点中渲染。\n</p>\n<h3>安装</h3>\n<pre class=\"code prettyprint\">\nnpm install gfs-react-dm --save\n</pre>\n<h3>表单元素数据更新方式</h3>\n<pre class=\"code prettyprint\">\n    后续完善...\n</pre>\n<h3>使用(一个改变年龄的简单例子)</h3>\n* View\n<pre class=\"code prettyprint\">\nimport React, { Component /*,PropTypes*/} from 'react'\nimport {Model,Control,Sync,View,page} from 'gfs-react-dm'\n\n@View(TestControl)\nclass TestComponent extends Component {\n    constructor(props) {\n        super(props)\n    }\n\n    componentDidMount(){\n        setTimeout(()=>{\n            //调用control中的方法改变age\n            this.props.changeAge(this)\n        },1000)\n    }\n\n    static defaultProps={}\n\n    render() {\n        console.log('age:',this.props.testmodel.get('age') )\n        return (\n            <div>\n                {this.props.testmodel.get('age')}\n            </div>\n        )\n    }\n}\n\n//渲染到页面\npage(TestComponent)\n</pre>\n\n* Control\n<pre class=\"code prettyprint\">\nimport {Control,fetch} from 'gfs-react-dm'\nimport TestModel from '../model/TestModel'\n\n@Control(TestModel)\nclass TestControl {\n\n    static changeAge(){\n\n        return (dispatch)=>{\n            fetch('/test.json',/*params*/).then((data)=>{\n                //control中默认提供update、del、insert、save四种操作数据方法\n\n                dispatch(this.update('age','ajax改变的age：'+data.age) )\n            })\n        }\n    }\n}\n</pre>\n\n* Model\n<pre class=\"code prettyprint\">\nimport {Model} from 'gfs-react-dm'\n\n@Model\nclass TestModel {\n    //必须赋予__name值，否则无法正确查找到store\n    static __name = 'test'\n    static age = 20\n}\n</pre>",
-        "version": "1.0.11",
+        "version": "1.0.13",
         "hideFoundAt": "true",
         "hideClassItemTable": "true",
         "hideTabItemList": "true",
@@ -450,6 +450,11 @@
                             "name": "bar",
                             "description": "可选，异步数据请求时加载状态栏",
                             "type": "Object"
+                        },
+                        {
+                            "name": "debug",
+                            "description": "可选，是否是调试状态，调试状态下会输出日志信息",
+                            "type": "Boolean"
                         },
                         {
                             "name": "agent",
