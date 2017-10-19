@@ -19,7 +19,7 @@ npm install gfs-react-dm --save
 <pre class="code prettyprint">
     后续完善...
 </pre>
-<h3>使用(一个改变年龄的简单例子,适用于2.0以上版本)</h3>
+<h3>使用(一个改变年龄的简单例子)</h3>
 * View
 <pre class="code prettyprint">
 import React, { Component /*,PropTypes*/} from 'react'
@@ -56,30 +56,21 @@ page(TestComponent)
 
 * Control
 <pre class="code prettyprint">
-import {Control,fetch,action} from 'gfs-react-dm'
+import {Control,fetch} from 'gfs-react-dm'
 import TestModel from '../model/TestModel'
 
 @Control(TestModel)
 class TestControl {
-    constructor(){
 
-    }
+    static changeAge(){
 
-    @action
-    changeAge(){
-        
-        //方法之间可以相互调用
-        book = this.getBook()
+        return (dispatch)=>{
+            fetch('/test.json',/*params*/).then((data)=>{
+                //control中默认提供update、del、insert、save四种操作数据方法
 
-        fetch('/test.json',/*params*/).then((data)=>{
-            //control中默认提供update、del、insert、save四种操作数据方法
-
-            this.update('age','ajax改变的age：'+data.age)
-        })
-    }
-    //pojo
-    getBook(){
-        return {}
+                dispatch(this.update('age','ajax改变的age：'+data.age) )
+            })
+        }
     }
 }
 </pre>

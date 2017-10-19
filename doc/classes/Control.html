@@ -201,7 +201,7 @@
             
         
         
-        <a href="../files/src_control.js.html#l325"><code>src&#x2F;control.js:325</code></a>
+        <a href="../files/src_control.js.html#l324"><code>src&#x2F;control.js:324</code></a>
         
         </p>
 
@@ -355,22 +355,24 @@
  //@Control(TestModel)
  class TestControl{
      constructor(){}
-     static changeAge(){
+     $action
+     changeAge(){
 
-          return (dispatch)=&gt;{
-              fetch(&#39;/test.json&#39;[,params]).then((data)=&gt;{
-                  //control中默认提供update、del、insert、save四种操作数据方法，会根据不同的control名生成，如下根据testControl生成的方法testControlUpdate
 
-                  dispatch(this.testControlUpdate(&#39;age&#39;,&#39;ajax改变的age：&#39;+data.age) )
-              })
-          }
+         fetch(&#39;/test.json&#39;[,params]).then((data)=&gt;{
+             //control中默认提供update、del、insert、save四种操作数据方法，会根据不同的control名生成，如下根据testControl生成的方法testControlUpdate
+
+             dispatch(this.testControlUpdate(&#39;age&#39;,&#39;ajax改变的age：&#39;+data.age) )
+         })
+
       }
      //不建议使用下列方式
      //这里由于@为文档关键符号，所以下面将以$代替
      $Sync(&#39;/test&#39;,{
          method:&#39;get&#39;
      })
-     static save(data){
+     $action
+     save(data){
          //此处data是异步请求后服务器返回的结果
          if(data){
              //返回数据更新页面节点信息
@@ -564,8 +566,8 @@
             <div class="example-content ">
                 <div class="stdoc-code"><pre class="code prettyprint"><code>   $Control(TestModel)
    class TestControl {
-       static delTest(data,c){
-           return this.del(&#39;age&#39;)
+       delTest(data,dispatch,modelJson,model){
+           this.del(&#39;age&#39;)
        }
    }</code></pre>
 </div>
@@ -641,7 +643,7 @@
             
         
         
-        <a href="../files/src_control.js.html#l394"><code>src&#x2F;control.js:394</code></a>
+        <a href="../files/src_control.js.html#l406"><code>src&#x2F;control.js:406</code></a>
         
         </p>
 
@@ -851,7 +853,7 @@
             
         
         
-        <a href="../files/src_control.js.html#l114"><code>src&#x2F;control.js:114</code></a>
+        <a href="../files/src_control.js.html#l113"><code>src&#x2F;control.js:113</code></a>
         
         </p>
 
@@ -1032,14 +1034,14 @@
             <div class="example-content ">
                 <div class="stdoc-code"><pre class="code prettyprint"><code>   $Control(TestModel)
    class TestControl {
-       static insertTest(data,c){
-           return (dispatch)=&gt;{
-               fetch(&#39;/test&#39;).then((data)=&gt;{
-                   dispatch(this.insert({
-                       sex:&#39;男&#39;
-                   }) )
+       insertTest(data,dispatch,modelJson,model){
+
+           fetch(&#39;/test&#39;).then((data)=&gt;{
+               this.insert({
+                   sex:&#39;男&#39;
                })
-           }
+           })
+
        }
    }</code></pre>
 </div>
@@ -1121,7 +1123,7 @@
             
         
         
-        <a href="../files/src_control.js.html#l152"><code>src&#x2F;control.js:152</code></a>
+        <a href="../files/src_control.js.html#l151"><code>src&#x2F;control.js:151</code></a>
         
         </p>
 
@@ -1302,12 +1304,12 @@
             <div class="example-content ">
                 <div class="stdoc-code"><pre class="code prettyprint"><code>   $Control(TestModel)
    class TestControl {
-       static saveTest(data,c){
-           return (dispatch)=&gt;{
-               fetch(&#39;/test&#39;).then((data)=&gt;{
-                   dispatch(this.save(&#39;age&#39;,data.age) )
-               })
-           }
+       saveTest(data,dispatch,modelJson,model){
+
+           fetch(&#39;/test&#39;).then((data)=&gt;{
+               this.save(&#39;age&#39;,data.age) 
+           })
+
        }
    }</code></pre>
 </div>
@@ -1371,7 +1373,7 @@
             
         
         
-        <a href="../files/src_control.js.html#l185"><code>src&#x2F;control.js:185</code></a>
+        <a href="../files/src_control.js.html#l184"><code>src&#x2F;control.js:184</code></a>
         
         </p>
 
@@ -2036,12 +2038,10 @@
             <div class="example-content ">
                 <div class="stdoc-code"><pre class="code prettyprint"><code>   $Control(TestModel)
    class TestControl {
-       static updateTest(data,c){
-           return (dispatch)=&gt;{
-               fetch(&#39;/test&#39;).then((data)=&gt;{
-                   dispatch(this.update(&#39;age&#39;,data.age) )
-               })
-           }
+       updateTest(data,dispatch,modelJson,model){
+           fetch(&#39;/test&#39;).then((data)=&gt;{
+               this.update(&#39;age&#39;,data.age)
+           })
        }
    }</code></pre>
 </div>
@@ -2117,7 +2117,7 @@
             
         
         
-        <a href="../files/src_control.js.html#l75"><code>src&#x2F;control.js:75</code></a>
+        <a href="../files/src_control.js.html#l74"><code>src&#x2F;control.js:74</code></a>
         
         </p>
 
@@ -2266,10 +2266,10 @@
             <div class="example-content ">
                 <div class="stdoc-code"><pre class="code prettyprint"><code>   $Control(TestModel)
    class TestControl {
-       static updateTest(data,c){
-           return (dispatch)=&gt;{
+       updateTest(data,dispatch,modelJson,model){
+           return 
                fetch(&#39;/test&#39;).then((data)=&gt;{
-                   dispatch(this.updateWith({
+                   this.updateWith({
                        names:[&#39;test&#39;,&#39;test1&#39;,&#39;test2&#39;]
                    },function merger(prev,next){
                        if( Immutable.List.isList(prev) &amp;&amp;  Immutable.List.isList(next)){
@@ -2279,9 +2279,9 @@
                            return prev.mergeWith(merger,next)
                        }
                        return next
-                   }) )
+                   }) 
                })
-           }
+
        }
    }</code></pre>
 </div>

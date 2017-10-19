@@ -1,28 +1,36 @@
-import {Model,Control,Sync,View,page,action,noenumerable} from '../../src/index.js'
+import {Model,Control,Sync,View,page} from '../../src/index.js'
 import Immutable from 'immutable'
 
 @Model
 class TestModel {
     static __name = 'test'
-    static age = 18
+    static age = 20
     static xq = null
     constructor(){
        
     }
 }
 
+class TestAction{
+    constructor(){}
+    showTest(){
+        console.dir('testaction')
+    }
+}
+let action = new TestAction()
 
 
 @Control(TestModel)
 class TestControl {
     //Object.defineProperty(target, key, descriptor);
-    constructor(){
-
-    }
-    @action
-    saveTest(data,dispatch){
+    @Sync('/test.json',{
+        error:(err)=>{
+            console.dir(err)
+        }
+    })
+    static saveTest(data,c){
         //this.getChange()('age', 10)
-        this.update('age','ajax改变的age：'+this.getAge() || data.age) 
+        return this.update('age','ajax改变的age：'+data.age)
 
         /*data.age = 'ajax改变的age：'+data.age
         action.showTest()
@@ -31,13 +39,8 @@ class TestControl {
             data:data
         }*/
     }
-    @action
-    insertTest(path,data,dispatch,model){
-        
-          this.save(path,data)
-    }
-    getAge(){
-        return 110
+    static insertTest(path,data){
+          return this.save(path,data)
     }
 }
 
@@ -52,12 +55,10 @@ class TestComponent extends Component {
     }
 
     componentDidMount(){
-        // setTimeout(()=>{
-            this.props.saveTest({
-                age:100
-            })
+        setTimeout(()=>{
+            this.props.saveTest(this)
             this.props.insertTest('xq.test.name','insert-xiaomin')
-        // },1000)
+        },1000)
 
     }
 

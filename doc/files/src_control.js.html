@@ -128,21 +128,21 @@ let curl = {
      * @example
         $Control(TestModel)
         class TestControl {
-            static delTest(data,c){
-                return this.del(&#x27;age&#x27;)
+            delTest(data,dispatch,modelJson,model){
+                this.del(&#x27;age&#x27;)
             }
         }
      */
     del:function(path,data,modelName=this.__modelName){
         path = path.indexOf(&#x27;.&#x27;)&gt;=0?path.split(&#x27;.&#x27;):Array.prototype.concat.call([],path)
 
-        return (dispatch)=&gt;{
+        (dispatch||this.dispatch)((dispatch)=&gt;{
             dispatch({
                 type:this.getModelName(&#x27;del&#x27;,true,modelName),//&#x60;${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}del&#x60;,
                 path:path,
                 data:data
             })
-        }
+        })
     },
     /**
      * 更新store中某条数据,主要已合并为主，如果是想将新值覆盖旧值，请使用save方法
@@ -154,12 +154,10 @@ let curl = {
      * @example
         $Control(TestModel)
         class TestControl {
-            static updateTest(data,c){
-                return (dispatch)=&gt;{
-                    fetch(&#x27;/test&#x27;).then((data)=&gt;{
-                        dispatch(this.update(&#x27;age&#x27;,data.age) )
-                    })
-                }
+            updateTest(data,dispatch,modelJson,model){
+                fetch(&#x27;/test&#x27;).then((data)=&gt;{
+                    this.update(&#x27;age&#x27;,data.age)
+                })
             }
         }
      */
@@ -170,13 +168,14 @@ let curl = {
         }else{
             path = path.indexOf(&#x27;.&#x27;)&gt;=0?path.split(&#x27;.&#x27;):Array.prototype.concat.call([],path)
         }
-        return (dispatch)=&gt;{
+        
+        (dispatch||this.dispatch)( (dispatch)=&gt;{
             dispatch({
                 type:this.getModelName(&#x27;update&#x27;,true,modelName),//&#x60;${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}update&#x60;,
                 path:path,
                 data:data
             })
-        }
+        } )
     },
     /**
      * 更新store中某条数据，可自定义合并规则
@@ -188,10 +187,10 @@ let curl = {
      * @example
         $Control(TestModel)
         class TestControl {
-            static updateTest(data,c){
-                return (dispatch)=&gt;{
+            updateTest(data,dispatch,modelJson,model){
+                return 
                     fetch(&#x27;/test&#x27;).then((data)=&gt;{
-                        dispatch(this.updateWith({
+                        this.updateWith({
                             names:[&#x27;test&#x27;,&#x27;test1&#x27;,&#x27;test2&#x27;]
                         },function merger(prev,next){
                             if( Immutable.List.isList(prev) &amp;&amp;  Immutable.List.isList(next)){
@@ -201,21 +200,21 @@ let curl = {
                                 return prev.mergeWith(merger,next)
                             }
                             return next
-                        }) )
+                        }) 
                     })
-                }
+                
             }
         }
      */
     updateWith:function(data,merge,modelName=this.__modelName){
         
-        return (dispatch)=&gt;{
+        (dispatch||this.dispatch)(  (dispatch)=&gt;{
             dispatch({
                 type:this.getModelName(&#x27;updateWith&#x27;,true,modelName),//&#x60;${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}update&#x60;,
                 merge:merge||null,
                 data:data
             })
-        }
+        })
     },
     /**
      * 插入store中某条数据
@@ -228,14 +227,14 @@ let curl = {
      * @example
         $Control(TestModel)
         class TestControl {
-            static insertTest(data,c){
-                return (dispatch)=&gt;{
-                    fetch(&#x27;/test&#x27;).then((data)=&gt;{
-                        dispatch(this.insert({
-                            sex:&#x27;男&#x27;
-                        }) )
+            insertTest(data,dispatch,modelJson,model){
+                
+                fetch(&#x27;/test&#x27;).then((data)=&gt;{
+                    this.insert({
+                        sex:&#x27;男&#x27;
                     })
-                }
+                })
+                
             }
         }
      */
@@ -246,14 +245,14 @@ let curl = {
         }else{
             path = path.indexOf(&#x27;.&#x27;)&gt;=0?path.split(&#x27;.&#x27;):Array.prototype.concat.call([],path)
         }
-        return (dispatch)=&gt;{
+        (dispatch||this.dispatch)(  (dispatch)=&gt;{
             dispatch({
                 type:this.getModelName(&#x27;update&#x27;,true,modelName),//&#x60;${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}update&#x60;,
                 path:path,
                 data:data,
                 isImmutable:isImmutable
             })
-        }
+        })
     },
     /**
      * 保存store中某条数据
@@ -266,24 +265,24 @@ let curl = {
      * @example
         $Control(TestModel)
         class TestControl {
-            static saveTest(data,c){
-                return (dispatch)=&gt;{
-                    fetch(&#x27;/test&#x27;).then((data)=&gt;{
-                        dispatch(this.save(&#x27;age&#x27;,data.age) )
-                    })
-                }
+            saveTest(data,dispatch,modelJson,model){
+                
+                fetch(&#x27;/test&#x27;).then((data)=&gt;{
+                    this.save(&#x27;age&#x27;,data.age) 
+                })
+                
             }
         }
      */
     save:function(path,data,isImmutable=false,modelName=this.__modelName){
-        return (dispatch)=&gt; {
+        (dispatch||this.dispatch)(  (dispatch)=&gt; {
             dispatch({
                 type: this.getModelName(&#x27;save&#x27;,true,modelName),//&#x60;${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}save&#x60;,
                 path: path.indexOf(&#x27;.&#x27;) &gt;= 0 ? path.split(&#x27;.&#x27;) : Array.prototype.concat.call([], path),
                 data: data,
                 isImmutable:isImmutable
             })
-        }
+        })
     }
 }
 
@@ -443,22 +442,24 @@ export function Sync(anywhere){
  *      //@Control(TestModel)
  *      class TestControl{
  *          constructor(){}
- *          static changeAge(){
+ *          $action
+ *          changeAge(){
  *
- *               return (dispatch)=&gt;{
- *                   fetch(&#x27;/test.json&#x27;[,params]).then((data)=&gt;{
- *                       //control中默认提供update、del、insert、save四种操作数据方法，会根据不同的control名生成，如下根据testControl生成的方法testControlUpdate
+ *               
+ *              fetch(&#x27;/test.json&#x27;[,params]).then((data)=&gt;{
+ *                  //control中默认提供update、del、insert、save四种操作数据方法，会根据不同的control名生成，如下根据testControl生成的方法testControlUpdate
  *
- *                       dispatch(this.testControlUpdate(&#x27;age&#x27;,&#x27;ajax改变的age：&#x27;+data.age) )
- *                   })
- *               }
+ *                  dispatch(this.testControlUpdate(&#x27;age&#x27;,&#x27;ajax改变的age：&#x27;+data.age) )
+ *              })
+ *               
  *           }
  *          //不建议使用下列方式
  *          //这里由于@为文档关键符号，所以下面将以$代替
  *          $Sync(&#x27;/test&#x27;,{
  *              method:&#x27;get&#x27;
  *          })
- *          static save(data){
+ *          $action
+ *          save(data){
  *              //此处data是异步请求后服务器返回的结果
  *              if(data){
  *                  //返回数据更新页面节点信息
@@ -485,18 +486,29 @@ export function Control(model={},loadingbar,mock){
       // let control  = new target()
        //循环遍历方法，将返回
        //将方法的作用域改成对象本身
-       var t = target
+       //postmodel.toJS()
+       var t = new target()
        var p ={}
        for(var item in t) {
-           p[item] = t[item] instanceof Function ? t[item].bind(t ) : t[item]
+            (function(item){
+                const fnName = item
+                p[fnName] = function(){
+                    var args = Array.prototype.slice.call(arguments)
+                    return (dispatch,store)=&gt;{
+                        let modelJson = store()[model.modelName]
+                        return t[fnName](...args,dispatch,modelJson.toJS(),modelJson )
+                    }
+                }
+            })(item)
+        // p[item] = t[item] instanceof Function ? t[item].bind(t ) : t[item]
        }
        model.controls = p
        controlList[model.modelName] = model
 
        for(var cItem in curl){
-           target[/*name.replace(/^.{0,1}/,function(c){return c.toLowerCase()})+cItem.replace(/^.{0,1}/,function(c){return c.toUpperCase()})*/cItem] = curl[cItem]
+           target.prototype[cItem] = curl[cItem]
        }
-       target.__modelName = model.modelName
+       target.prototype.__modelName = target.__modelName = model.modelName
        /**
         * 获取model方法名全名，在未传任何值时返回方法前缀
         * @method getModelName
@@ -505,7 +517,7 @@ export function Control(model={},loadingbar,mock){
         * @param modelName {string} model名字，可选
         * @return string
         */
-       target.getModelName= function(actionName=&#x27;&#x27;,isDefault=false,modelName = target.__modelName){
+        target.prototype.getModelName=target.getModelName= function(actionName=&#x27;&#x27;,isDefault=false,modelName = target.__modelName){
            return &#x60;${isDefault?DEFAULT+DEFAULT_METHOD_FIX:&#x27;&#x27;}${modelName}${DEFAULT_METHOD_FIX}${actionName}&#x60;
        }
        return model

@@ -107,6 +107,7 @@
 export {Model} from &#x27;./model&#x27;
 export {Control,Sync,fetch} from &#x27;./control&#x27;
 export {View} from &#x27;./view&#x27;
+export {enumerable as action,noenumerable} from &#x27;./decorator&#x27;
 //export {binding} from &#x27;./valuelink&#x27;
 
 import extend from &#x27;extend&#x27;
@@ -154,7 +155,7 @@ export function page(opts={}){
 
     opts.middleware = [thunkMiddleware].concat(opts.middleware||[])
 
-    if(opts.debug || location.port!=&#x27;&#x27;){
+    if(opts.debug || (typeof(opts.debug)==&#x27;undefined&#x27; &amp;&amp;location&amp;&amp; location.port!=&#x27;&#x27;) ){
         opts.middleware.push(require(&#x27;redux-logger&#x27;)() )
     }
 

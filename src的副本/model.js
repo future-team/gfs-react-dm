@@ -164,7 +164,6 @@ export  function Model(target){
     //取得属性或方法
     params = implement(target,modelName)
     params = implement(curl,modelName,params,DEFAULT)
-    // params = implement(target.prototype,modelName,params)
 
     let store = createReducer(modelName, Immutable.fromJS(params.property||{} ), params.method)
 

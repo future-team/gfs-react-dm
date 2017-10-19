@@ -1,7 +1,7 @@
 export {Model} from './model'
 export {Control,Sync,fetch} from './control'
 export {View} from './view'
-export {enumerable as action,noenumerable} from './decorator'
+export {enumerable} from './decorator'
 //export {binding} from './valuelink'
 
 import extend from 'extend'
