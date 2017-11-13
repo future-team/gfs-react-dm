@@ -30,13 +30,13 @@ let curl = {
     del:function(path,data,modelName=this.__modelName){
         path = path.indexOf('.')>=0?path.split('.'):Array.prototype.concat.call([],path)
 
-        (dispatch||this.dispatch)((dispatch)=>{
-            dispatch({
+        return this.dispatch(
+            {
                 type:this.getModelName('del',true,modelName),//`${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}del`,
                 path:path,
                 data:data
-            })
-        })
+            }
+        )
     },
     /**
      * 更新store中某条数据,主要已合并为主，如果是想将新值覆盖旧值，请使用save方法
@@ -62,14 +62,14 @@ let curl = {
         }else{
             path = path.indexOf('.')>=0?path.split('.'):Array.prototype.concat.call([],path)
         }
-        
-        (dispatch||this.dispatch)( (dispatch)=>{
-            dispatch({
+
+        return this.dispatch(
+            {
                 type:this.getModelName('update',true,modelName),//`${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}update`,
                 path:path,
                 data:data
-            })
-        } )
+            }
+        )
     },
     /**
      * 更新store中某条数据，可自定义合并规则
@@ -101,14 +101,14 @@ let curl = {
         }
      */
     updateWith:function(data,merge,modelName=this.__modelName){
-        
-        (dispatch||this.dispatch)(  (dispatch)=>{
-            dispatch({
+
+        return this.dispatch(
+            {
                 type:this.getModelName('updateWith',true,modelName),//`${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}update`,
                 merge:merge||null,
                 data:data
-            })
-        })
+            }
+        )
     },
     /**
      * 插入store中某条数据
@@ -139,14 +139,15 @@ let curl = {
         }else{
             path = path.indexOf('.')>=0?path.split('.'):Array.prototype.concat.call([],path)
         }
-        (dispatch||this.dispatch)(  (dispatch)=>{
-            dispatch({
+
+        return this.dispatch(
+            {
                 type:this.getModelName('update',true,modelName),//`${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}update`,
                 path:path,
                 data:data,
                 isImmutable:isImmutable
-            })
-        })
+            }
+        )
     },
     /**
      * 保存store中某条数据
@@ -169,14 +170,15 @@ let curl = {
         }
      */
     save:function(path,data,isImmutable=false,modelName=this.__modelName){
-        (dispatch||this.dispatch)(  (dispatch)=> {
-            dispatch({
+
+        return this.dispatch(
+            {
                 type: this.getModelName('save',true,modelName),//`${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}save`,
                 path: path.indexOf('.') >= 0 ? path.split('.') : Array.prototype.concat.call([], path),
                 data: data,
                 isImmutable:isImmutable
-            })
-        })
+            }
+        )
     }
 }
 
@@ -388,11 +390,13 @@ export function Control(model={},loadingbar,mock){
                 const fnName = item
                 p[fnName] = function(){
                     var args = Array.prototype.slice.call(arguments)
+                    var _this = this
                     return (dispatch,store)=>{
                         let modelJson = store()[model.modelName]
-                        return t[fnName](...args,dispatch,modelJson.toJS(),modelJson )
+                        _this.dispatch = dispatch
+                        return t[fnName](...args,dispatch,modelJson && typeof(modelJson.toJS)!='undefined'?modelJson.toJS():null,modelJson||null )
                     }
-                }
+                }.bind(t)
             })(item)
         // p[item] = t[item] instanceof Function ? t[item].bind(t ) : t[item]
        }

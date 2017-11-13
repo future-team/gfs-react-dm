@@ -1,13 +1,26 @@
 export {Model} from './model'
 export {Control,Sync,fetch} from './control'
 export {View} from './view'
-export {enumerable as action,noenumerable} from './decorator'
+export {enumerable as Action,noenumerable as Noenumerable} from './decorator'
 //export {binding} from './valuelink'
 
 import extend from 'extend'
 import RTools from 'gfs-react-tools'
 import {getModels,emptyModels} from './model'
 import thunkMiddleware from 'redux-thunk'
+
+import Immutable from 'immutable'
+
+if(window && window.DM_STORE){
+    var __initData = {},
+        dmStore = window.DM_STORE
+    for(var item in dmStore){
+        if(dmStore[item] instanceof Object){
+            __initData[item] = Immutable.fromJS(dmStore[item] )
+        }
+    }
+    window.DM_STORE = __initData
+}
 
 /**
  * 提供Model、View、Control、Sync、RTools等系列便捷类库
@@ -71,7 +84,7 @@ export function page(opts={}){
         debug:false
     },opts) )
 
-    emptyModels()
+    // emptyModels()
 
     return rtools
 }

@@ -44,12 +44,22 @@ function merger(prev,next){
     return next
 }
 
+function getOriginData(data){
+    if(data){
+        if(typeof(data.toJS )=='undefined' ){
+            return Immutable.fromJS(data)
+        }
+    }
+
+    return data
+}
+
 let curl = {
     del:function(data,action){
-        return data.deleteIn(action.path)
+        return getOriginData(data).deleteIn(action.path)
     },
     update:function(data,action){
-        data = getField(data,action.path)
+        data = getOriginData(getField(data,action.path) )
         if(typeof(action.data) ==='string' && action.path){
             return data.setIn(action.path,action.data)
         }
@@ -57,7 +67,7 @@ let curl = {
         return action.path ? data.mergeDeepIn(action.path,action.data ) : data.mergeDeep(action.data )
     },
     updateWith:function(data,action){
-        //data = getField(data,action.path)
+        data = getOriginData(data)
         if(typeof(action.data) ==='string' && action.path){
             return data.setIn(action.path,action.data)
         }
@@ -65,21 +75,21 @@ let curl = {
         return data.mergeWith(action.merge ? action.merge:merger,action.data )
     },
     save:function(data,action){
-        data = getField(data,action.path)
+        data = getOriginData(getField(data,action.path) )
         return data.setIn(action.path,action.isImmutable ?Immutable.fromJS(action.data) : action.data)
     },
     insert:function(data,action){
-        data = getField(data,action.path)
+        data = getOriginData(getField(data,action.path) )
         return data.setIn(action.path,action.isImmutable ?Immutable.fromJS(action.data) : action.data)
     },
     query:function(data){
         return data
     },
     findOne:function(data,action){
-        return data.getIn(action.path)
+        return getOriginData(data).getIn(action.path)
     },
     find:function(data,action){
-        return data.getIn(action.path)
+        return getOriginData(data).getIn(action.path)
     }
 }
 
