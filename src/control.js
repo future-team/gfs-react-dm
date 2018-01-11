@@ -101,7 +101,10 @@ let curl = {
         }
      */
     updateWith:function(data,merge,modelName=this.__modelName){
-
+        if(data&& data.modelName){
+            modelName = data.modelName.toLowerCase()
+            data = data.data
+        }
         return this.dispatch(
             {
                 type:this.getModelName('updateWith',true,modelName),//`${DEFAULT}${DEFAULT_METHOD_FIX}${modelName}${DEFAULT_METHOD_FIX}update`,
